@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { createChart, isBusinessDay } from 'lightweight-charts';
 import { Colors, getChartOptions } from './chartOptions';
 import { Spin } from 'antd';
@@ -24,7 +24,7 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
   const tooltipRef = useRef();
   const [state, setState] = useState({ loading: false });
   // // Functions
-  const setData = () => {
+  const setData = useCallback(() => {
     setState((prev) => ({ ...prev, loading: true }));
     const timeIntervals = getTimeData(interval) || [];
     const axiosRequests = [];
@@ -92,7 +92,7 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
     chart.timeScale().fitContent();
 
     outOfChart(currentData);
-  };
+  },[interval, market]);
   const outOfChart = (currentData) => {
     if (
       !currentData ||
@@ -141,7 +141,7 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
     tooltipRef.current.style.left = 12 + 'px';
     tooltipRef.current.style.display = 'block';
   };
-  const subscribeHandler = (param) => {
+  const subscribeHandler = useCallback((param) => {
     if (
       !param.time ||
       param.point.x < 0 ||
@@ -195,7 +195,8 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
       tooltipRef.current.style.top = 14 + 'px';
       tooltipRef.current.style.display = 'block';
     }
-  };
+  },[height, width]);
+
   // Life Cycles
   useEffect(() => {
     if (chart) {
@@ -226,10 +227,11 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
       const newRect = entries[0].contentRect;
       chart.applyOptions({ height: newRect.height, width: newRect.width });
     }).observe(chartRef.current);
-  }, [width, height]);
+  }, [subscribeHandler]);
+
   useEffect(() => {
     setData();
-  }, [interval, market]);
+  }, [setData]);
   return [
     <div
       style={{

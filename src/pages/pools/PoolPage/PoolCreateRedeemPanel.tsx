@@ -17,7 +17,7 @@ import { sendTransaction } from '../../../utils/send';
 const { Text } = Typography;
 const { TabPane } = Tabs;
 
-interface PoolCreateRedeemPanel {
+interface PoolCreateRedeemPanelModel {
   poolInfo: PoolInfo;
   mintInfo: MintInfo;
 }
@@ -25,7 +25,7 @@ interface PoolCreateRedeemPanel {
 export default function PoolCreateRedeemPanel({
   poolInfo,
   mintInfo,
-}: PoolCreateRedeemPanel) {
+}: PoolCreateRedeemPanelModel) {
   return (
     <FloatingElement stretchVertical>
       <Tabs>

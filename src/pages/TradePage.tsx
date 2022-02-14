@@ -3,7 +3,6 @@ import { Button, Col, Popover, Row, Select, Typography } from 'antd';
 import styled from 'styled-components';
 import Orderbook from '../components/Orderbook';
 import UserInfoTable from '../components/UserInfoTable';
-import StandaloneBalancesDisplay from '../components/StandaloneBalancesDisplay';
 import {
   getMarketInfos,
   getTradePageUrl,
@@ -17,7 +16,6 @@ import TradesTable from '../components/TradesTable';
 import LinkAddress from '../components/LinkAddress';
 import DeprecatedMarketsInstructions from '../components/DeprecatedMarketsInstructions';
 import {
-  ConsoleSqlOutlined,
   DeleteOutlined,
   InfoCircleOutlined,
   PlusCircleOutlined,
@@ -80,7 +78,7 @@ function TradePageInner() {
   const markets = useMarketsList();
   const [handleDeprecated, setHandleDeprecated] = useState(false);
   const [addMarketVisible, setAddMarketVisible] = useState(false);
-  const deprecatedMarkets = useUnmigratedDeprecatedMarkets();
+  const deprecatedMarkets = useUnmigratedDeprecatedMarkets(); 
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
     width: window.innerWidth,
@@ -267,17 +265,6 @@ function MarketSelector({
     )
     ?.address?.toBase58();
   
-  //dali trying
-  useEffect(()=>{
-    console.log('market changed')
-  },[market?.address])
-  console.log(market?.address)
-  
-  console.log(getMarketInfos(customMarkets))
-  console.log(getMarketInfos(customMarkets).find(
-    (proposedMarket) =>
-      market?.address && proposedMarket.address.equals(market.address),
-  ));
   
 
   return (

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { createContext, useMemo } from 'react';
 import { Provider, Program } from '@project-serum/anchor';
@@ -17,11 +16,7 @@ const programID = new PublicKey(idl.metadata.address);
 export function WorkspaceProvider(props) {
   //const wallet = useAnchorWallet();
   const {
-    endpoint,
-    endpointInfo,
-    setEndpoint,
-    availableEndpoints,
-    setCustomEndpoints,
+    endpoint
   } = useConnectionConfig();
 
   const connection = new Connection(endpoint, 'recent');
@@ -33,12 +28,9 @@ export function WorkspaceProvider(props) {
       preflightCommitment,
       commitment,
     });
-  }, [wallet]);
+  }, [wallet,connection]);
 
   const program = useMemo(() => {
-    console.log('Idl: ', idl);
-    console.log('ProgramId:', programID.toBase58());
-    console.log('Provider:', provider);
     return new Program(idl, programID, provider);
   }, [provider]);
 

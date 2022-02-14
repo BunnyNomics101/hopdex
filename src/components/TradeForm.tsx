@@ -106,7 +106,6 @@ export default function TradeForm({
     const warmUpCache = async () => {
       try {
         if (!wallet || !publicKey || !market) {
-          console.log(`Skipping refreshing accounts`);
           return;
         }
         const startTime = getUnixTs();

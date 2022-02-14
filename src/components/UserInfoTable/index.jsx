@@ -4,14 +4,11 @@ import React from 'react';
 import { Tabs, Typography } from 'antd';
 import FillsTable from './FillsTable';
 import FloatingElement from '../layout/FloatingElement';
-import FeesTable from './FeesTable';
-import { useOpenOrders, useBalances, useMarket } from '../../utils/markets';
+import { useOpenOrders, useBalances } from '../../utils/markets';
 
-const { Paragraph } = Typography;
 const { TabPane } = Tabs;
 
-export default function Index() {
-  const { market } = useMarket();
+export default function Index() { 
   return (
     <FloatingElement style={{ flex: 1, paddingTop: 20, minHeight: '287px' }}>
       <Typography>

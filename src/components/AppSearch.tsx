@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {  useRef, useState } from 'react';
 import { Select, Typography } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { TOKEN_MINTS } from '@project-serum/serum';
@@ -59,7 +59,7 @@ export default function AppSearch(props) {
     
     handleClear();
   };
-
+ 
   const handleClear = () => {
     setSearchMatches([]);
     setSearchValue(undefined);

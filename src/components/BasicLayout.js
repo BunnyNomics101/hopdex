@@ -1,12 +1,10 @@
 import { Layout } from 'antd';
 import React, { useEffect } from 'react';
-import TopBar from './TopBar';
-import { CustomFooter as Footer } from './Footer';
 import { useReferrer } from '../utils/referrer';
 import queryString from 'query-string';
 import { useLocation } from 'react-router-dom';
 import { notify } from '../utils/notifications';
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 export default function BasicLayout({ children }) {
   const { refCode, setRefCode, allowRefLink } = useReferrer();

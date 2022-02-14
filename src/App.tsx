@@ -8,7 +8,6 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { Routes } from './Routes';
 import { PreferencesProvider } from './utils/preferences';
 import { ReferrerProvider } from './utils/referrer';
-import { MarketProvider } from './utils/markets';
 
 export default function App() {
   return (

@@ -23,7 +23,6 @@ import {
 import {WRAPPED_SOL_MINT} from '@project-serum/serum/lib/token-instructions';
 import {Order} from '@project-serum/serum/lib/market';
 import BonfidaApi from './bonfidaConnector';
-import { Console } from 'console';
 
 // Used in debugging, should be false in production
 const _IGNORE_DEPRECATED = false;
