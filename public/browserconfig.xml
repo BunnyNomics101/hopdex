@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square16x16logo src="/favicon-16.png"/>
+      <square32x32logo src="/favicon-32.png"/>
+      <square57x57logo src="/favicon-57.png"/>
+      <square60x60logo src="/favicon-60.png"/>
+      <square64x64logo src="/favicon-64.png"/>
+      <square70x70logo src="/favicon-70.png"/>
+      <square72x72logo src="/favicon-72.png"/>
+      <square76x76logo src="/favicon-76.png"/>
+      <square96x96logo src="/favicon-96.png"/>
+      <square114x114logo src="/favicon-114.png"/>
+      <square120x120logo src="/favicon-120.png"/>
+      <square144x144logo src="/favicon-144.png"/>
+      <square150x150logo src="/favicon-150.png"/>
+      <square152x152logo src="/favicon-152.png"/>
+      <square152x152logo src="/favicon-152.png"/>
+      <square160x160logo src="/favicon-160.png"/>
+      <square180x180logo src="/favicon-180.png"/>
+      <square192x192logo src="/favicon-192.png"/>
+      <square310x310logo src="/favicon-310.png"/>
+      <TileColor>#FFFFFF</TileColor>
+    </tile>
+  </msapplication>
+</browserconfig>

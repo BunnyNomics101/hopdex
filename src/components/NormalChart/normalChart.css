@@ -1,0 +1,143 @@
+body {
+  margin: 0;
+  background-color: #060b13;
+}
+
+.buffer {
+  padding: 20px;
+  width: 100%;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.switch-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.switcher {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  margin-top: 8px;
+  color: #6cd19d;
+  background-color: #060b13;
+}
+
+.switcher-item {
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  padding: 6px 8px;
+  font-size: 14px;
+  color: #6cd19d;
+  background-color: transparent;
+  margin-right: 8px;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+}
+
+.switcher-item:hover {
+  color: #060b13;
+  background-color: #6cd19d;
+}
+
+.switcher-active-item {
+  text-decoration: none;
+  cursor: default;
+  color: #060b13;
+}
+
+.switcher-active-item,
+.switcher-active-item:hover {
+  background-color: #6cd19d;
+}
+
+.chart-toggle {
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  width: 33px;
+  height: 28px;
+  background-color: #060b13;
+  background-repeat: no-repeat;
+  background-size: 22px 22px;
+  background-position: center;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  outline: none;
+}
+
+.chart-toggle--candles {
+  background-image: url('candles.svg');
+}
+
+.chart-toggle--line {
+  background-image: url('line.svg');
+}
+
+.chart-toggle:hover {
+  border-color: #6cd19d;
+}
+
+.tooltip {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: 'Roboto', 'Arial', sans-serif;
+  position: absolute;
+  display: none;
+  box-sizing: border-box;
+  background-color: transparent;
+  text-align: center;
+  z-index: 1000;
+  top: 3px;
+  left: 10px;
+  pointer-events: none;
+  text-transform: capitalize;
+}
+
+.tooltip__price {
+  padding: 2px;
+  font-size: 36px;
+  line-height: 20px;
+  letter-spacing: -0.06em;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.tooltip__price-small {
+  font-size: 21px;
+  padding-right: 4px;
+}
+
+.tooltip__time {
+  padding: 2px;
+  font-size: 11px;
+  color: #5a6168;
+  letter-spacing: -0.05em;
+}
+
+.green {
+  color: #6acf9e;
+}
+
+.red {
+  color: #ce5d47;
+}
+
+.yellow {
+  color: #fdd835;
+}
