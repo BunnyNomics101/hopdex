@@ -2,7 +2,7 @@ import React from 'react';
 import TweetCard from './TweetCard';
 
 const TweetList = (props) => {
-  const { tweets, loading } = props;
+  const { tweets, loading, remove } = props;
   const orderedTweets = tweets.sort((a, b) => b.timestamp - a.timestamp);
 
   if (loading) {
@@ -12,7 +12,7 @@ const TweetList = (props) => {
   return (
     <div className="divide-y">
       {orderedTweets.map((tweet) => (
-        <TweetCard key={tweet.key} tweet={tweet}></TweetCard>
+        <TweetCard remove={remove} key={tweet.key} tweet={tweet}></TweetCard>
       ))}
     </div>
   );

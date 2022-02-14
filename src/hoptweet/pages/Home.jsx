@@ -9,6 +9,8 @@ export const Home = () => {
   const [tweets, setTweets] = useState([]);
   const [loading, setLoading] = useState(true);
   const addTweet = (tweet) => setTweets([...tweets, tweet]);
+  const removeTweet = (tweet) =>
+    setTweets(tweets.filter((t) => t.timestamp !== tweet.timestamp));
   const workspace = useContext(WorkspaceContext);
 
   useEffect(() => {
@@ -20,7 +22,11 @@ export const Home = () => {
   return (
     <div>
       <TweetForm added={addTweet}></TweetForm>
-      <TweetList tweets={tweets} loading={loading}></TweetList>
+      <TweetList
+        remove={removeTweet}
+        tweets={tweets}
+        loading={loading}
+      ></TweetList>
     </div>
   );
 };
