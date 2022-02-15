@@ -382,16 +382,17 @@ const RenderNormal = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
             width={width}
             height={height}
             isMobileView={false}
+            smallScreen={false} onPrice={onPrice} onSize={onSize}
           />
         </Row>
         <Row>
           <UserInfoTable />
+          <Col flex={'360px'} style={{ height: '100%' }}>
+            <TradesTable smallScreen={false} />
+          </Col>
         </Row>
       </Col>
-      <Col flex={'360px'} style={{ height: '100%' }}>
-        <Orderbook smallScreen={false} onPrice={onPrice} onSize={onSize} />
-        <TradesTable smallScreen={false} />
-      </Col>
+      
       <Col
         flex="400px"
         style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
@@ -407,7 +408,9 @@ const RenderSmall = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
   return (
     <>
       <Row>
-        <TVChartContainer width={width} height={height} isMobileView={false} />
+        <TVChartContainer width={width} height={height} isMobileView={false} 
+          smallScreen={false} onPrice={onPrice} onSize={onSize}
+        />
       </Row>
       <Row
       // style={{
@@ -452,7 +455,9 @@ const RenderSmaller = ({
   return (
     <>
       <Row>
-        <TVChartContainer width={width} height={height} isMobileView={true} />
+        <TVChartContainer width={width} height={height} isMobileView={true}
+          smallScreen={false} onPrice={onPrice} onSize={onSize}
+        />
       </Row>
       <Row>
         <Col xs={24} sm={12} style={{ display: 'flex' }}>

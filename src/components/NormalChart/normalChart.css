@@ -65,7 +65,7 @@ body {
   background-color: #6cd19d;
 }
 
-.chart-toggle {
+.chart-toggle,.switch-to-order-book {
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
@@ -140,4 +140,12 @@ body {
 
 .yellow {
   color: #fdd835;
+}
+
+.switch-to-order-book{
+  margin-right: 5px;
+}
+
+.switch-to-order-book:hover, .switch-to-order-book.shown{
+  border-color: #6cd19d;
 }

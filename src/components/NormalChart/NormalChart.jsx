@@ -1,27 +1,38 @@
 import React, { useState } from 'react';
 import LineSvg from './line.svg';
 import CandleSvg from './candles.svg';
+import OrderBookSvg from './order-book.svg'
 
 import CandleSeries from './CandleSeries';
 import LineSeries from './LineSeries';
+import Orderbook from '../Orderbook';
+import { Row, Col } from 'antd';
 import './normalChart.css';
 
 const intervals = ['1d', '1w', '1m', '3m', '1y'];
 const charts = {
   candleChart: 'Candle Chart',
   lineChart: 'Line Chart',
+  orderBook: 'Order Boot'
 };
-const NormalChart = ({ width, height, isMobileView }) => {
+const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize }) => {
   const [currentInteraval, setCurrentInterval] = useState('1d');
   const [currentChart, setCurrentChart] = useState(charts.lineChart);
   const [barSize, setBarSize] = useState(10);
-  const onChartsChangeHandler = () => {
+  const onChartsChangeHandler = (table= false) => {
+    console.log(height);
+    if(table===true){
+      setCurrentChart((currentChart===charts.orderBook)? 
+        charts.lineChart:
+        charts.orderBook)
+      return;
+    }
     const toggledChart =
       currentChart === charts.candleChart
         ? charts.lineChart
         : currentChart === charts.lineChart
         ? charts.candleChart
-        : '';
+        : charts.lineChart;
     setCurrentChart(toggledChart);
   };
   const onIntervalChangeHandler = (interaval) => {
@@ -59,7 +70,18 @@ const NormalChart = ({ width, height, isMobileView }) => {
             isMobileView={isMobileView}
           />
         )}
+        {currentChart === charts.orderBook && (
+          <Row style={{width: '100%', height: '500px',alignItems:'center'}} >
+            <Col flex="auto" >
+              <Orderbook smallScreen={true} onPrice={onPrice} onSize={onSize} />
+            </Col>
+          </Row>
+          
+        ) }
+
+        {/* buttons row */}
         <div className="switch-container" id="switch-container">
+          {/* time buttons */}
           <div className="switcher">
             {intervals.map((item,index) => (
               <button
@@ -73,8 +95,14 @@ const NormalChart = ({ width, height, isMobileView }) => {
               </button>
             ))}
           </div>
-
+          {/* graph buttons */}
           <div>
+            <button 
+              className={"switch-to-order-book "+((currentChart===charts.orderBook)?'shown':'')}
+              onClick = {()=>{onChartsChangeHandler(true)}}
+            >
+              <img src={OrderBookSvg} alt="Book" style={{ width: 24 }} />
+            </button>
             <button
               type="button"
               id="chart-toggle"
@@ -82,12 +110,7 @@ const NormalChart = ({ width, height, isMobileView }) => {
               onClick={onChartsChangeHandler}
             >
               {' '}
-              {currentChart === charts.candleChart && (
-                <img src={LineSvg} alt="Line" style={{ width: 24 }} />
-              )}
-              {currentChart === charts.lineChart && (
-                <img src={CandleSvg} alt="Candle" style={{ width: 24 }} />
-              )}
+              <img src={(currentChart === charts.lineChart)?CandleSvg:LineSvg} alt="Candle" style={{ width: 24 }} />
             </button>
           </div>
         </div>
