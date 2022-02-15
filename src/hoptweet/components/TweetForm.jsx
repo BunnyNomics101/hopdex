@@ -1,10 +1,11 @@
 import React from 'react';
 import { useContext, useRef, useState } from 'react';
+import { useWallet } from '../../utils/wallet';
 import { sendTweet } from '../api/send-tweet';
 import { useAutoresizeTextarea } from '../hooks/useAutoresizeTextarea';
 import { useCountCharacterLimit } from '../hooks/useCountCharacterLimit';
 import { useSlug } from '../hooks/useSlug';
-import { useWallet } from '@solana/wallet-adapter-react';
+// import { useWallet } from '@solana/wallet-adapter-react';
 import { WorkspaceContext } from '../hooks/WorkspaceProvider';
 
 const TweetForm = (props) => {
@@ -56,7 +57,7 @@ const TweetForm = (props) => {
       <textarea
         ref={textarea}
         rows="1"
-        className="text-xl w-full focus:outline-none resize-none mb-3"
+        className="text-xl w-full focus:outline-none resize-none mb-3 text-black"
         placeholder="What's happening?"
         value={content}
         onChange={(e) => setContent(e.target.value)}

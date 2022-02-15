@@ -36,6 +36,47 @@
           "type": "string"
         }
       ]
+    },
+    {
+      "name": "updateTweet",
+      "accounts": [
+        {
+          "name": "tweet",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "author",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "topic",
+          "type": "string"
+        },
+        {
+          "name": "content",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "deleteTweet",
+      "accounts": [
+        {
+          "name": "tweet",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "author",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
@@ -77,6 +118,6 @@
     }
   ],
   "metadata": {
-    "address": "73yUYJbxtaPwzEjXJux9QBt4VHEiru3RNTDGEWY7sv4k"
+    "address": "pEMbwzjrwbg7LhUBRgpnmumzWiq88wEss2SHVyGVEqJ"
   }
 }
