@@ -115,7 +115,7 @@ class FetchLoopInternal<T = any> {
       }
     } catch (error) {
       ++this.errors;
-      console.warn(error);
+      // console.warn(error);
       errored = true;
     } finally {
       if (!this.timeoutId && !this.stopped) {
