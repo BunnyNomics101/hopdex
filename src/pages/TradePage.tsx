@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Col, Popover, Row, Select, Typography } from 'antd';
 import styled from 'styled-components';
-import Orderbook from '../components/Orderbook';
 import UserInfoTable from '../components/UserInfoTable';
 import {
   getMarketInfos,
@@ -382,7 +381,8 @@ const RenderNormal = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
             width={width}
             height={height}
             isMobileView={false}
-            smallScreen={false} onPrice={onPrice} onSize={onSize}
+            depth={13}
+            smallScreen={true} onPrice={onPrice} onSize={onSize}
           />
         </Row>
         <Row>
@@ -409,7 +409,10 @@ const RenderSmall = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
     <>
       <Row>
         <TVChartContainer width={width} height={height} isMobileView={false} 
-          smallScreen={false} onPrice={onPrice} onSize={onSize}
+          smallScreen={true}
+          depth={13}
+          onPrice={onPrice}
+          onSize={onSize}
         />
       </Row>
       <Row
@@ -417,14 +420,6 @@ const RenderSmall = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
       //   height: '900px',
       // }}
       >
-        <Col flex="auto" style={{ display: 'flex' }}>
-          <Orderbook
-            smallScreen={true}
-            depth={13}
-            onPrice={onPrice}
-            onSize={onSize}
-          />
-        </Col>
         <Col flex="auto" style={{ display: 'flex' }}>
           <TradesTable smallScreen={true} />
         </Col>
@@ -456,7 +451,7 @@ const RenderSmaller = ({
     <>
       <Row>
         <TVChartContainer width={width} height={height} isMobileView={true}
-          smallScreen={false} onPrice={onPrice} onSize={onSize}
+          smallScreen={true} onPrice={onPrice} onSize={onSize}
         />
       </Row>
       <Row>
@@ -466,16 +461,6 @@ const RenderSmaller = ({
         {/* <Col xs={24} sm={12}>
           <StandaloneBalancesDisplay />
         </Col> */}
-      </Row>
-      <Row
-        style={{
-          // height: '500px',
-        }}
-      >
-        <Col  flex="auto">
-          <Orderbook smallScreen={true} onPrice={onPrice} onSize={onSize} />
-        </Col>
-        
       </Row>
       
       <Row>

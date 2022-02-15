@@ -15,7 +15,7 @@ const charts = {
   lineChart: 'Line Chart',
   orderBook: 'Order Boot'
 };
-const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize }) => {
+const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,depth=7 }) => {
   const [currentInteraval, setCurrentInterval] = useState('1d');
   const [currentChart, setCurrentChart] = useState(charts.lineChart);
   const [barSize, setBarSize] = useState(10);
@@ -71,9 +71,9 @@ const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize }
           />
         )}
         {currentChart === charts.orderBook && (
-          <Row style={{width: '100%', height: '500px',alignItems:'center'}} >
+          <Row style={{width: '100%', minHeight: '500px',alignItems:'center'}} >
             <Col flex="auto" >
-              <Orderbook smallScreen={true} onPrice={onPrice} onSize={onSize} />
+              <Orderbook depth={depth} smallScreen={smallScreen} onPrice={onPrice} onSize={onSize} />
             </Col>
           </Row>
           
