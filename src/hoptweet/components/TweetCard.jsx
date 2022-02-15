@@ -1,5 +1,5 @@
 import React from 'react';
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { deleteTweet } from '../api/delete-tweet';
 import { WorkspaceContext } from '../hooks/WorkspaceProvider';
@@ -17,16 +17,16 @@ const TweetCard = (props) => {
     remove(tweet);
   };
 
-  const authorRoute = useMemo(() => {
-    if (isMyTweet()) {
-      return { name: '/profile', params: { author: '' } };
-    } else {
-      return {
-        name: '/users',
-        params: { author: tweet.author.toBase58() },
-      };
-    }
-  }, [wallet, tweet]);
+  // const authorRoute = useMemo(() => {
+  //   if (isMyTweet()) {
+  //     return { name: '/profile', params: { author: '' } };
+  //   } else {
+  //     return {
+  //       name: '/users',
+  //       params: { author: tweet.author.toBase58() },
+  //     };
+  //   }
+  // }, [wallet, tweet]);
 
   return (
     <div className="px-8 py-4">
