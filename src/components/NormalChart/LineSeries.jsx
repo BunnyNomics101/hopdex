@@ -227,6 +227,7 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
 
   return [
     <div
+      key={1}
       style={{
         height: '50vh',
         display: state.loading ? 'flex' : 'none',
@@ -237,6 +238,7 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
       <Spin size="large" />
     </div>,
     <div
+      key={2}
       id="chart-container"
       style={{
         height: '50vh',
