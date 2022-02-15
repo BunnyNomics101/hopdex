@@ -464,21 +464,27 @@ const RenderSmaller = ({
       </Row>
       <Row
         style={{
-          height: '500px',
+          // height: '500px',
         }}
       >
-        <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
+        <Col  flex="auto">
           <Orderbook smallScreen={true} onPrice={onPrice} onSize={onSize} />
         </Col>
-        <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
+        
+      </Row>
+      
+      <Row>
+        <Col flex="auto">
           <TradesTable smallScreen={true} />
         </Col>
       </Row>
+
       <Row>
         <Col flex="auto">
           <UserInfoTable />
         </Col>
       </Row>
+      <div style={{height: '30vh'}}></div>
     </>
   );
 };

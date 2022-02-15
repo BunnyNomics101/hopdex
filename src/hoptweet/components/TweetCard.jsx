@@ -29,7 +29,7 @@ const TweetCard = (props) => {
   // }, [wallet, tweet]);
 
   return (
-    <div className="px-8 py-4">
+    <div className="px-8 py-4" >
       <div className="flex justify-between">
         <div className="py-1">
           <h3

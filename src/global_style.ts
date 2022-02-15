@@ -88,4 +88,8 @@ input[type=number]:focus::-webkit-inner-spin-button {
   -moz-animation: highlight 0.5s ease 0s 1 alternate ;
   -webkit-animation: highlight 0.5s ease 0s 1 alternate;
   animation: highlight 0.5s ease 0s 1 alternate;
-}`;
+}
+#root > section > main > div > div:nth-child(5) > div > div > main > div > div.px-8.py-4.border-b > div > div.relative.m-2.mr-4 > input{
+  width: 100%;
+}
+`;
