@@ -1,13 +1,56 @@
-import React from 'react';
-import { Row, Col } from 'antd';
+import React,{ useState } from 'react';
+import { Row, Col,Button } from 'antd';
 import { useFills, useMarket, useOpenOrders } from '../../utils/markets';
 import DataTable from '../layout/DataTable';
+import styled from 'styled-components';
+import { DeleteOutlined } from '@ant-design/icons';
+import { useWallet } from '../../utils/wallet';
+import { useSendConnection } from '../../utils/connection';
+import { cancelOrder } from '../../utils/send';
+import { notify } from '../../utils/notifications';
 
-export default function FillsTable() {
+const CancelButton = styled(Button)`
+  color: #f23b69;
+  border: 1px solid #f23b69;
+`;
+
+export default function FillsTable({
+  onCancelSuccess
+}) {
   const fills = useFills();
   const openOrders = useOpenOrders();
 
   const { quoteCurrency } = useMarket();
+  let { wallet } = useWallet();
+  let connection = useSendConnection();
+
+  const [cancelId, setCancelId] = useState(null);
+
+  async function cancel(order) {
+    setCancelId(order?.orderId);
+    try {
+      if (!wallet) {
+        return null;
+      }
+
+      await cancelOrder({
+        order,
+        market: order.market,
+        connection,
+        wallet,
+      });
+    } catch (e) {
+      notify({
+        message: 'Error cancelling order',
+        description: e.message,
+        type: 'error',
+      });
+      return;
+    } finally {
+      setCancelId(null);
+    }
+    onCancelSuccess && onCancelSuccess();
+  }
 
   const columns = [
     {
@@ -48,9 +91,23 @@ export default function FillsTable() {
       dataIndex: 'feeCost',
       key: 'feeCost',
     },
+    {
+      key: 'orderId',
+      render: (order) => (
+        <div style={{ textAlign: 'right' }}>
+          {(order.isOpen && <CancelButton
+            icon={<DeleteOutlined />}
+            onClick={() => cancel(order)}
+            loading={cancelId + '' === order?.orderId + ''}
+          >
+            Cancel
+          </CancelButton>)}
+        </div>
+      ),
+    },
   ];
 
-  
+
   const dataSourceFill = (fills || []).map((fill) => ({
     ...fill,
     key: `${fill.orderId}${fill.side}`,
@@ -62,7 +119,8 @@ export default function FillsTable() {
     key: order.orderId,
   }));
 
-  const dataSource= [...dataSourceFill, ...dataSourceOpenOrders]
+
+  const dataSource = [...dataSourceOpenOrders, ...dataSourceFill]
 
   return (
     <>
@@ -73,7 +131,7 @@ export default function FillsTable() {
             columns={columns}
             pagination={true}
             pageSize={5}
-            emptyLabel="No fills"
+            emptyLabel="No Orders"
           />
         </Col>
       </Row>

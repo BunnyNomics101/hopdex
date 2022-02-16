@@ -125,6 +125,7 @@ export default function OpenOrderTable({
       ),
     },
   ];
+  
   const dataSource = (openOrders || []).map((order) => ({
     ...order,
     key: order.orderId,
