@@ -1,10 +1,11 @@
 import React from 'react';
 import { Row, Col } from 'antd';
-import { useFills, useMarket } from '../../utils/markets';
+import { useFills, useMarket, useOpenOrders } from '../../utils/markets';
 import DataTable from '../layout/DataTable';
 
 export default function FillsTable() {
   const fills = useFills();
+  const openOrders = useOpenOrders();
 
   const { quoteCurrency } = useMarket();
 
@@ -49,11 +50,19 @@ export default function FillsTable() {
     },
   ];
 
-  const dataSource = (fills || []).map((fill) => ({
+  
+  const dataSourceFill = (fills || []).map((fill) => ({
     ...fill,
     key: `${fill.orderId}${fill.side}`,
     liquidity: fill.eventFlags.maker ? 'Maker' : 'Taker',
+  }))
+
+  const dataSourceOpenOrders = (openOrders || []).map((order) => ({
+    ...order,
+    key: order.orderId,
   }));
+
+  const dataSource= [...dataSourceFill, ...dataSourceOpenOrders]
 
   return (
     <>

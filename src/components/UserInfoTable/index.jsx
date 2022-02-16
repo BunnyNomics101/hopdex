@@ -22,6 +22,9 @@ export default function Index() {
         </Paragraph> */}
       </Typography>
       <Tabs defaultActiveKey="orders">
+        <TabPane tab="Orders" key="orders-only">
+          <FillsTable />
+        </TabPane>
         <TabPane tab="Open Orders" key="orders">
           <OpenOrdersTab />
         </TabPane>
