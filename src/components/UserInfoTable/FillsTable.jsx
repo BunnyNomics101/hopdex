@@ -100,7 +100,7 @@ export default function FillsTable({
             onClick={() => cancel(order)}
             loading={cancelId + '' === order?.orderId + ''}
           >
-            Cancel
+            
           </CancelButton>)}
         </div>
       ),
@@ -117,8 +117,8 @@ export default function FillsTable({
   const dataSourceOpenOrders = (openOrders || []).map((order) => ({
     ...order,
     key: order.orderId,
+    isOpen: true
   }));
-
 
   const dataSource = [...dataSourceOpenOrders, ...dataSourceFill]
 
