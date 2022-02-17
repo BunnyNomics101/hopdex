@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Col, Popover, Row, Select, Typography } from 'antd';
+import { Button, Col, Row, Select, Typography } from 'antd';
 import styled from 'styled-components';
 import LogoSvg from "../assets/logo.svg";
 import UserInfoTable from '../components/UserInfoTable';
@@ -13,12 +13,12 @@ import {
 } from '../utils/markets';
 import TradeForm from '../components/TradeForm';
 import TradesTable from '../components/TradesTable';
-import LinkAddress from '../components/LinkAddress';
+// import LinkAddress from '../components/LinkAddress';
 import DeprecatedMarketsInstructions from '../components/DeprecatedMarketsInstructions';
 import {
   DeleteOutlined,
-  InfoCircleOutlined,
-  PlusCircleOutlined,
+  // InfoCircleOutlined,
+  // PlusCircleOutlined,
 } from '@ant-design/icons';
 import CustomMarketDialog from '../components/CustomMarketDialog';
 import { notify } from '../utils/notifications';
@@ -69,7 +69,7 @@ export default function TradePage() {
 
 function TradePageInner() {
   const {
-    market,
+    // market,
     marketName,
     customMarkets,
     setCustomMarkets,
@@ -172,12 +172,13 @@ function TradePageInner() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            paddingBottom: '10px'
           }}
           gutter={16}
         >
           <Row
             align="middle"
-            style={{ paddingLeft: 5, paddingRight: 5, display: 'flex', paddingBottom: '10px' }}
+            style={{ paddingLeft: 5, paddingRight: 5, display: 'flex'  }}
             gutter={16}
           >
             <Col style={{paddingRight: 0,paddingLeft: 2}}>
@@ -191,7 +192,7 @@ function TradePageInner() {
                 onDeleteCustomMarket={onDeleteCustomMarket}
               />
             </Col>
-            {market ? (
+            {/* {market ? (
               <Col>
                 <Popover
                   content={
@@ -204,13 +205,13 @@ function TradePageInner() {
                   <InfoCircleOutlined style={{ color: '#2abdd2' }} />
                 </Popover>
               </Col>
-            ) : null}
-            <Col>
+            ) : null} */}
+            {/* <Col>
               <PlusCircleOutlined
                 style={{ color: '#2abdd2' }}
                 onClick={() => setAddMarketVisible(true)}
               />
-            </Col>
+            </Col> */}
           </Row>
 
           {/* i am here */}
@@ -218,16 +219,24 @@ function TradePageInner() {
             <div style={{
               display:'flex', 
               alignItems:'center',
-              gap: '10px'
+              gap: '10px',
+              position: 'relative',
+              zIndex: 1,
             }}>
               <h1 style={{
                 fontSize: '1.2rem',
                 margin: 0,
-                color: '#434a59'
+                color: '#434a59',
+                zIndex: 2, 
               }}>Hopdex</h1>
               <img src={LogoSvg} alt="hopdex"
                 style={{
                   width: '40px',
+                  position:'absolute',
+                  left: '50%', top: '50%',
+                  transform:'translate(-50%,-50%)',
+                  zIndex: 1, 
+                  opacity:0.3
                 }}
               />
               </div>
@@ -291,11 +300,16 @@ function MarketSelector({
     ?.address?.toBase58();
   
 
+  const StyledSelect = styled(Select)`
+    width: 150px; height: 40px;
+    @media(max-width: 450px){
+      width: 120px;
+    }
+  `
   return (
-    <Select
+    <StyledSelect
       showSearch
       size={'large'}
-      style={{ width: 150,height: 40}}
       placeholder={placeholder || 'Select a market'}
       optionFilterProp="name"
       onSelect={onSetMarketAddress}
@@ -368,7 +382,7 @@ function MarketSelector({
             </Option>
           ))}
       </OptGroup>
-    </Select>
+    </StyledSelect>
   );
 }
 
