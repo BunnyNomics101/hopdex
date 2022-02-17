@@ -177,11 +177,12 @@ function TradePageInner() {
         >
           <Row
             align="middle"
-            style={{ paddingLeft: 5, paddingRight: 5, display: 'flex' }}
+            style={{ paddingLeft: 5, paddingRight: 5, display: 'flex', paddingBottom: '10px' }}
             gutter={16}
           >
-            <Col >
+            <Col style={{paddingRight: 0,paddingLeft: 2}}>
               <MarketSelector
+                
                 width={width}
                 markets={markets}
                 setHandleDeprecated={setHandleDeprecated}
@@ -233,7 +234,9 @@ function TradePageInner() {
           </Col>
 
 
-          <Col>
+          <Col style={{
+            paddingLeft: 0, paddingRight: 0
+          }}>
             <WalletConnect />
           </Col>
           {deprecatedMarkets && deprecatedMarkets.length > 0 && (
@@ -287,13 +290,12 @@ function MarketSelector({
     )
     ?.address?.toBase58();
   
-  
 
   return (
     <Select
       showSearch
       size={'large'}
-      style={{ width: width < 1000 ? 130 : 200 }}
+      style={{ width: 150,height: 40}}
       placeholder={placeholder || 'Select a market'}
       optionFilterProp="name"
       onSelect={onSetMarketAddress}
