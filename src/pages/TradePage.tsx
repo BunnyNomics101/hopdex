@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Col, Popover, Row, Select, Typography } from 'antd';
 import styled from 'styled-components';
+import LogoSvg from "../assets/logo.svg";
 import UserInfoTable from '../components/UserInfoTable';
 import {
   getMarketInfos,
@@ -210,6 +211,28 @@ function TradePageInner() {
               />
             </Col>
           </Row>
+
+          {/* i am here */}
+          <Col>
+            <div style={{
+              display:'flex', 
+              alignItems:'center',
+              gap: '10px'
+            }}>
+              <h1 style={{
+                fontSize: '1.2rem',
+                margin: 0,
+                color: '#434a59'
+              }}>Hopdex</h1>
+              <img src={LogoSvg} alt="hopdex"
+                style={{
+                  width: '40px',
+                }}
+              />
+              </div>
+          </Col>
+
+
           <Col>
             <WalletConnect />
           </Col>
