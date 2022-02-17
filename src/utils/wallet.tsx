@@ -65,6 +65,13 @@ export const WALLET_PROVIDERS = [
   },
 ];
 
+const PHANTOM_PROVIDER ={
+  name: 'Phantom',
+  url: 'https://www.phantom.app',
+  icon: `https://www.phantom.app/img/logo.png`,
+  adapter: PhantomWalletAdapter,
+};
+
 const WalletContext = React.createContext<null | WalletContextValues>(null);
 
 export function WalletProvider({ children }) {
@@ -164,8 +171,15 @@ export function WalletProvider({ children }) {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const select = useCallback(() => setIsModalVisible(true), []);
+ 
   const close = useCallback(() => setIsModalVisible(false), []);
+
+  const select = useCallback(() => {
+    // setIsModalVisible(true)
+    setProviderUrl(PHANTOM_PROVIDER.url);
+    setAutoConnect(true);
+    close();
+  }, [close,setProviderUrl]);
 
   return (
     <WalletContext.Provider

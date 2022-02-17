@@ -124,7 +124,7 @@ export function useLocalStorageState<T = any>(
   );
   return [
     useMemo(() => stringState && JSON.parse(stringState), [stringState]),
-    (newState) => setStringState(JSON.stringify(newState)),
+    useCallback((newState) => setStringState(JSON.stringify(newState)),[setStringState]),
   ];
 }
 
