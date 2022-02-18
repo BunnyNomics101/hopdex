@@ -34,6 +34,24 @@ const BuyButton = styled(Button)`
   border-color: #02bf76;
 `;
 
+const StyledInputGroup = styled(Input.Group)`
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color: grey;
+  @media(max-width: 900px){
+    flex-direction:column;
+    align-items:stretch;
+    &>*{
+      width: 100% !important;
+      margin:5px 0;
+    }
+    .styled-input-x{
+      display:none;
+    }
+  }
+`
+
 export default function TradeForm({
   style,
   setChangeOrderRef,
@@ -303,14 +321,7 @@ export default function TradeForm({
         </Radio.Group>
 
 
-        <Input.Group
-          style={{
-            display:'flex',
-            justifyContent:'space-between',
-            alignItems:'center'
-          }}
-        >
-          
+        <StyledInputGroup>
           <Input
             style={{ textAlign: 'right', width: 'calc(50% - 10px)'}}
             addonBefore={<div style={{width:50}}>Price</div>}
@@ -322,7 +333,7 @@ export default function TradeForm({
             step={market?.tickSize || 1}
             onChange={(e) => setPrice(parseFloat(e.target.value))}
           />
-          <span style={{width:10}}>x</span>
+          <span className='styled-input-x' style={{width:10}}>x</span>
           <Input
             style={{ width: 'calc(50% - 10px)', textAlign: 'right' }}
             addonBefore={<div style={{width:50}}>Size</div>}
@@ -334,7 +345,7 @@ export default function TradeForm({
             step={market?.minOrderSize || 1}
             onChange={(e) => onSetBaseSize(parseFloat(e.target.value))}
           />
-        </Input.Group>
+        </StyledInputGroup>
       </div>
 
       {side === 'buy' ? (
