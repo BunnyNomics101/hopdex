@@ -46,7 +46,7 @@ const TweetForm = (props) => {
   if (!connected) {
     return (
       <div className="px-8 py-4 text-red-400 text-center border-b">
-        Connect your wallet to start tweeting...
+        Connect your wallet to start posting...
       </div>
     );
   }
@@ -105,7 +105,7 @@ const TweetForm = (props) => {
             disabled={!canTweet}
             onClick={send}
           >
-            Tweet
+            Post
           </button>
         </div>
       </div>
