@@ -357,7 +357,7 @@ export default function TradeForm({
           size="large"
           loading={submitting}
         >
-          Buy {baseSize || 0} {baseCurrency} for ${price*baseSize || 0}
+          Buy {baseSize || 0} {baseCurrency} for ${(price && baseSize)?(price*baseSize).toFixed(2):0}
         </BuyButton>
       ) : (
         <SellButton
