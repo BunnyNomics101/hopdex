@@ -45,6 +45,13 @@ const Wrapper = styled.div`
   }
 `;
 
+const StyledSelect = styled(Select)`
+  width: 150px; height: 40px;
+  @media(max-width: 450px){
+    width: 120px;
+  }
+`
+
 export default function TradePage() {
   const { marketAddress } = useParams();
   useEffect(() => {
@@ -300,12 +307,7 @@ function MarketSelector({
     ?.address?.toBase58();
   
 
-  const StyledSelect = styled(Select)`
-    width: 150px; height: 40px;
-    @media(max-width: 450px){
-      width: 120px;
-    }
-  `
+  
   return (
     <StyledSelect
       showSearch
