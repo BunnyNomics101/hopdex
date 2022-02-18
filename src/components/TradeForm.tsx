@@ -303,28 +303,17 @@ export default function TradeForm({
         </Radio.Group>
 
 
-        <Input.Group>
-          <div
-            style={{
-              width: '100%',
-              padding: '5px 11px',
-              color: 'rgba(255, 255, 255, 0.85)',
-              fontWeight: 'normal',
-              fontSize: '14px',
-              textAlign: 'center',
-              backgroundColor: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid #434343',
-              borderRadius: '2px',
-              transition: 'all 0.3s',
-              display:'flex'
-            }}
-          >
-             <span style={{flex: 1}}> Price </span>
-             <span>x</span>
-             <span style={{flex: 1}}> Size </span>
-          </div>
+        <Input.Group
+          style={{
+            display:'flex',
+            justifyContent:'space-between',
+            alignItems:'center'
+          }}
+        >
+          
           <Input
-            style={{ textAlign: 'right', width: '50%'}}
+            style={{ textAlign: 'right', width: 'calc(50% - 10px)'}}
+            addonBefore={<div style={{width:50}}>Price</div>}
             suffix={
               <span style={{ fontSize: 10, opacity: 0.5 }}>{quoteCurrency}</span>
             }
@@ -333,9 +322,10 @@ export default function TradeForm({
             step={market?.tickSize || 1}
             onChange={(e) => setPrice(parseFloat(e.target.value))}
           />
+          <span style={{width:10}}>x</span>
           <Input
-            style={{ width: '50%', textAlign: 'right' }}
-            
+            style={{ width: 'calc(50% - 10px)', textAlign: 'right' }}
+            addonBefore={<div style={{width:50}}>Size</div>}
             suffix={
               <span style={{ fontSize: 10, opacity: 0.5 }}>{baseCurrency}</span>
             }
@@ -356,7 +346,7 @@ export default function TradeForm({
           size="large"
           loading={submitting}
         >
-          Buy {baseSize || 0} {baseCurrency} for ${price || 0}
+          Buy {baseSize || 0} {baseCurrency} for ${price*baseSize || 0}
         </BuyButton>
       ) : (
         <SellButton
@@ -367,7 +357,7 @@ export default function TradeForm({
           size="large"
           loading={submitting}
         >
-          Sell {baseSize || 0} {baseCurrency} for ${price || 0}
+          Sell {baseSize || 0} {baseCurrency} for ${price*baseSize || 0}
         </SellButton>
       )}
     </FloatingElement>

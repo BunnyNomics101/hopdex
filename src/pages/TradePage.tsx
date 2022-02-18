@@ -416,6 +416,7 @@ const RenderNormal = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
             rowGap: '0px',
             minHeight: '580px',
             margin: '5px',
+            flexWrap:'nowrap'
           }}
         >
           <TVChartContainer
@@ -425,6 +426,13 @@ const RenderNormal = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
             depth={13}
             smallScreen={true} onPrice={onPrice} onSize={onSize}
           />
+          <Col
+            flex="500px"
+            style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+          >
+            <TradeForm setChangeOrderRef={onChangeOrderRef} />
+            {/* <StandaloneBalancesDisplay /> */}
+          </Col>
         </Row>
         <Row>
           <UserInfoTable />
@@ -434,13 +442,7 @@ const RenderNormal = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
         </Row>
       </Col>
       
-      <Col
-        flex="400px"
-        style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-      >
-        <TradeForm setChangeOrderRef={onChangeOrderRef} />
-        {/* <StandaloneBalancesDisplay /> */}
-      </Col>
+      
     </Row>
   );
 };
@@ -465,7 +467,7 @@ const RenderSmall = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
           <TradesTable smallScreen={true} />
         </Col>
         <Col
-          flex="400px"
+          flex="500px"
           style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
         >
           <TradeForm setChangeOrderRef={onChangeOrderRef} />
