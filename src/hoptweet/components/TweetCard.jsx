@@ -1,13 +1,13 @@
 import React from 'react';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { deleteTweet } from '../api/delete-tweet';
 import { SessionContext } from '../hooks/SessionProvider';
 import { WorkspaceContext } from '../hooks/WorkspaceProvider';
 
 const TweetCard = (props) => {
   const { tweet, remove } = props;
-  const { sessions, goBack, addSession } = useContext(SessionContext);
+  const { addSession } = useContext(SessionContext);
 
   const workspace = useContext(WorkspaceContext);
   const { wallet } = workspace;
