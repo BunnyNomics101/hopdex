@@ -1,4 +1,4 @@
-import {Button, Input, Radio, Slider, Switch} from 'antd';
+import {Button, Input, Radio} from 'antd';
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {
@@ -18,7 +18,7 @@ import {floorToDecimal, getDecimalCount, roundToDecimal,} from '../utils/utils';
 import {useSendConnection} from '../utils/connection';
 import FloatingElement from './layout/FloatingElement';
 import {getUnixTs, placeOrder} from '../utils/send';
-import {SwitchChangeEventHandler} from 'antd/es/switch';
+// import {SwitchChangeEventHandler} from 'antd/es/switch';
 import {refreshCache} from '../utils/fetch-loop';
 import tuple from 'immutable-tuple';
 
@@ -33,14 +33,6 @@ const BuyButton = styled(Button)`
   background: #02bf76;
   border-color: #02bf76;
 `;
-
-const sliderMarks = {
-  0: '0%',
-  25: '25%',
-  50: '50%',
-  75: '75%',
-  100: '100%',
-};
 
 export default function TradeForm({
   style,
@@ -66,10 +58,10 @@ export default function TradeForm({
     storedFeeDiscountKey: feeDiscountKey,
   } = useLocallyStoredFeeDiscountKey();
 
-  const [postOnly, setPostOnly] = useState(false);
-  const [ioc, setIoc] = useState(false);
+  const [postOnly] = useState(false);
+  const [ioc] = useState(false);
   const [baseSize, setBaseSize] = useState<number | undefined>(undefined);
-  const [quoteSize, setQuoteSize] = useState<number | undefined>(undefined);
+  // const [quoteSize, setQuoteSize] = useState<number | undefined>(undefined);
   const [price, setPrice] = useState<number | undefined>(undefined);
   const [submitting, setSubmitting] = useState(false);
   const [sizeFraction, setSizeFraction] = useState(0);
@@ -130,35 +122,35 @@ export default function TradeForm({
   const onSetBaseSize = (baseSize: number | undefined) => {
     setBaseSize(baseSize);
     if (!baseSize) {
-      setQuoteSize(undefined);
+      // setQuoteSize(undefined);
       return;
     }
     let usePrice = price || markPrice;
     if (!usePrice) {
-      setQuoteSize(undefined);
+      // setQuoteSize(undefined);
       return;
     }
-    const rawQuoteSize = baseSize * usePrice;
-    const quoteSize =
-      baseSize && roundToDecimal(rawQuoteSize, sizeDecimalCount);
-    setQuoteSize(quoteSize);
+    // const rawQuoteSize = baseSize * usePrice;
+    // const quoteSize =
+    //   baseSize && roundToDecimal(rawQuoteSize, sizeDecimalCount);
+    // setQuoteSize(quoteSize); 
   };
 
-  const onSetQuoteSize = (quoteSize: number | undefined) => {
-    setQuoteSize(quoteSize);
-    if (!quoteSize) {
-      setBaseSize(undefined);
-      return;
-    }
-    let usePrice = price || markPrice;
-    if (!usePrice) {
-      setBaseSize(undefined);
-      return;
-    }
-    const rawBaseSize = quoteSize / usePrice;
-    const baseSize = quoteSize && roundToDecimal(rawBaseSize, sizeDecimalCount);
-    setBaseSize(baseSize);
-  };
+  // const onSetQuoteSize = (quoteSize: number | undefined) => {
+  //   setQuoteSize(quoteSize);
+  //   if (!quoteSize) {
+  //     setBaseSize(undefined);
+  //     return;
+  //   }
+  //   let usePrice = price || markPrice;
+  //   if (!usePrice) {
+  //     setBaseSize(undefined);
+  //     return;
+  //   }
+  //   const rawBaseSize = quoteSize / usePrice;
+  //   const baseSize = quoteSize && roundToDecimal(rawBaseSize, sizeDecimalCount);
+  //   setBaseSize(baseSize);
+  // };
 
   const doChangeOrder = ({
     size,
@@ -208,18 +200,19 @@ export default function TradeForm({
     onSetBaseSize(formatted);
   };
 
-  const postOnChange: SwitchChangeEventHandler = (checked) => {
-    if (checked) {
-      setIoc(false);
-    }
-    setPostOnly(checked);
-  };
-  const iocOnChange: SwitchChangeEventHandler = (checked) => {
-    if (checked) {
-      setPostOnly(false);
-    }
-    setIoc(checked);
-  };
+  // const postOnChange: SwitchChangeEventHandler = (checked) => {
+  //   if (checked) {
+  //     setIoc(false);
+  //   }
+  //   setPostOnly(checked);
+  // };
+
+  // const iocOnChange: SwitchChangeEventHandler = (checked) => {
+  //   if (checked) {
+  //     setPostOnly(false);
+  //   }
+  //   setIoc(checked);
+  // };
 
   async function onSubmit() {
     if (!price) {
@@ -308,21 +301,41 @@ export default function TradeForm({
             SELL
           </Radio.Button>
         </Radio.Group>
-        <Input
-          style={{ textAlign: 'right', paddingBottom: 8 }}
-          addonBefore={<div style={{ width: '30px' }}>Price</div>}
-          suffix={
-            <span style={{ fontSize: 10, opacity: 0.5 }}>{quoteCurrency}</span>
-          }
-          value={price}
-          type="number"
-          step={market?.tickSize || 1}
-          onChange={(e) => setPrice(parseFloat(e.target.value))}
-        />
-        <Input.Group compact style={{ paddingBottom: 8 }}>
+
+
+        <Input.Group>
+          <div
+            style={{
+              width: '100%',
+              padding: '5px 11px',
+              color: 'rgba(255, 255, 255, 0.85)',
+              fontWeight: 'normal',
+              fontSize: '14px',
+              textAlign: 'center',
+              backgroundColor: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid #434343',
+              borderRadius: '2px',
+              transition: 'all 0.3s',
+              display:'flex'
+            }}
+          >
+             <span style={{flex: 1}}> Price </span>
+             <span>x</span>
+             <span style={{flex: 1}}> Size </span>
+          </div>
           <Input
-            style={{ width: 'calc(50% + 30px)', textAlign: 'right' }}
-            addonBefore={<div style={{ width: '30px' }}>Size</div>}
+            style={{ textAlign: 'right', width: '50%'}}
+            suffix={
+              <span style={{ fontSize: 10, opacity: 0.5 }}>{quoteCurrency}</span>
+            }
+            value={price}
+            type="number"
+            step={market?.tickSize || 1}
+            onChange={(e) => setPrice(parseFloat(e.target.value))}
+          />
+          <Input
+            style={{ width: '50%', textAlign: 'right' }}
+            
             suffix={
               <span style={{ fontSize: 10, opacity: 0.5 }}>{baseCurrency}</span>
             }
@@ -331,36 +344,9 @@ export default function TradeForm({
             step={market?.minOrderSize || 1}
             onChange={(e) => onSetBaseSize(parseFloat(e.target.value))}
           />
-          <Input
-            style={{ width: 'calc(50% - 30px)', textAlign: 'right' }}
-            suffix={
-              <span style={{ fontSize: 10, opacity: 0.5 }}>
-                {quoteCurrency}
-              </span>
-            }
-            value={quoteSize}
-            type="number"
-            step={market?.minOrderSize || 1}
-            onChange={(e) => onSetQuoteSize(parseFloat(e.target.value))}
-          />
         </Input.Group>
-        <Slider
-          value={sizeFraction}
-          tipFormatter={(value) => `${value}%`}
-          marks={sliderMarks}
-          onChange={onSliderChange}
-        />
-        <div style={{ paddingTop: 18 }}>
-          {'POST '}
-          <Switch
-            checked={postOnly}
-            onChange={postOnChange}
-            style={{ marginRight: 40 }}
-          />
-          {'IOC '}
-          <Switch checked={ioc} onChange={iocOnChange} />
-        </div>
       </div>
+
       {side === 'buy' ? (
         <BuyButton
           disabled={!price || !baseSize}
@@ -370,7 +356,7 @@ export default function TradeForm({
           size="large"
           loading={submitting}
         >
-          Buy {baseCurrency}
+          Buy {baseSize || 0} {baseCurrency} for ${price || 0}
         </BuyButton>
       ) : (
         <SellButton
@@ -381,7 +367,7 @@ export default function TradeForm({
           size="large"
           loading={submitting}
         >
-          Sell {baseCurrency}
+          Sell {baseSize || 0} {baseCurrency} for ${price || 0}
         </SellButton>
       )}
     </FloatingElement>
