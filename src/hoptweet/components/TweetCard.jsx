@@ -2,10 +2,13 @@ import React from 'react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { deleteTweet } from '../api/delete-tweet';
+import { SessionContext } from '../hooks/SessionProvider';
 import { WorkspaceContext } from '../hooks/WorkspaceProvider';
 
 const TweetCard = (props) => {
   const { tweet, remove } = props;
+  const { sessions, goBack, addSession } = useContext(SessionContext);
+
   const workspace = useContext(WorkspaceContext);
   const { wallet } = workspace;
   const isMyTweet = () =>
@@ -17,42 +20,43 @@ const TweetCard = (props) => {
     remove(tweet);
   };
 
-  // const authorRoute = useMemo(() => {
-  //   if (isMyTweet()) {
-  //     return { name: '/profile', params: { author: '' } };
-  //   } else {
-  //     return {
-  //       name: '/users',
-  //       params: { author: tweet.author.toBase58() },
-  //     };
-  //   }
-  // }, [wallet, tweet]);
-
   return (
-    <div className="px-8 py-4" >
+    <div className="px-8 py-4">
       <div className="flex justify-between">
         <div className="py-1">
           <h3
-            className="inline font-semibold text-sm text-gray-200"
+            className="inline font-semibold text-sm text-gray-200 hover:underline"
             title="tweet.author"
+            onClick={() => {
+              if (isMyTweet()) {
+                addSession({
+                  type: 'profile',
+                  params: { author: tweet.author.toBase58() },
+                });
+              } else {
+                addSession({
+                  type: 'users',
+                  params: { author: tweet.author.toBase58() },
+                });
+              }
+            }}
           >
             {/* Link to author page or the profile page if it's our own tweet */}
-            {/* <Link
-              to={`${authorRoute.name}/${authorRoute.params.author}`}
-              className="hover:underline"
-            > */}
             {tweet.author_display}
-            {/* </Link> */}
           </h3>
           <span className="text-gray-500"> • </span>
-          <time className="text-gray-500 text-sm" title="tweet.created_at">
+          <time
+            className="text-gray-500 text-sm hover:underline"
+            title="tweet.created_at"
+            onClick={() => {
+              addSession({
+                type: 'tweet',
+                params: { tweet: tweet.publicKey.toBase58() },
+              });
+            }}
+          >
             {/* Link to the tweet page. */}
-            {/* <Link
-              to={`/tweet/${tweet.publicKey.toBase58()}`}
-              className="hover:underline"
-            > */}
             {tweet.created_ago}
-            {/* </Link> */}
           </time>
         </div>
         {isMyTweet() && (
@@ -101,12 +105,17 @@ const TweetCard = (props) => {
       </p>
       {/* Link to the topic page.  */}
       {tweet.topic && (
-        <Link
-          to={`/topics/${tweet.topic}`}
+        <div
+          onClick={() => {
+            addSession({
+              type: 'topics',
+              params: { topic: tweet.topic },
+            });
+          }}
           className="inline-block mt-2 text-green-400 text-sm hover:underline"
         >
           #{tweet.topic}
-        </Link>
+        </div>
       )}
     </div>
   );

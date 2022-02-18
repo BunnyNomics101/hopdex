@@ -1,6 +1,7 @@
 import React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { fetchTweets } from '../api/fetch-tweets';
+import Sidebar from '../components/Sidebar';
 import TweetForm from '../components/TweetForm';
 import TweetList from '../components/TweetList';
 import { WorkspaceContext } from '../hooks/WorkspaceProvider';

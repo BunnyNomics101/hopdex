@@ -1,14 +1,17 @@
 import React from 'react';
 import { PublicKey } from '@solana/web3.js';
 import { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { getTweet } from '../api/get-tweet';
 import TweetCard from '../components/TweetCard';
 import { WorkspaceContext } from '../hooks/WorkspaceProvider';
 
-export function TweetPage() {
+export function TweetPage(props) {
+  const { session } = props;
   const [tweetAddress, setTweetAddress] = useState(null);
-  let { tweetSlug } = useParams();
+  let tweetSlug;
+  if (session.params && session.params.tweet) {
+    tweetSlug = session.params.tweet;
+  }
   const workspace = useContext(WorkspaceContext);
   const [loading, setLoading] = useState(true);
   const [tweet, setTweet] = useState(null);

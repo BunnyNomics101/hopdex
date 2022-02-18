@@ -1,15 +1,21 @@
 import React from 'react';
 import { useContext, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { authorFilter, fetchTweets } from '../api/fetch-tweets';
 import TweetList from '../components/TweetList';
 import { TweetSearch } from '../components/TweetSearch';
+import { SessionContext } from '../hooks/SessionProvider';
 import { WorkspaceContext } from '../hooks/WorkspaceProvider';
 
-export function Users() {
-  const navigate = useNavigate();
+export function Users(props) {
+  const { session } = props;
+  const { addSession } = useContext(SessionContext);
+
   const workspace = useContext(WorkspaceContext);
-  let { authorSlug } = useParams();
+
+  let authorSlug;
+  if (session.params && session.params.author) {
+    authorSlug = session.params.author;
+  }
 
   const [tweets, setTweets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +25,12 @@ export function Users() {
   // Actions.
   const search = (newAuthor) => {
     setAuthor(newAuthor);
-    navigate(`/users/${newAuthor}`);
+    addSession({
+      type: 'users',
+      params: {
+        author: newAuthor,
+      },
+    });
   };
 
   useEffect(() => {

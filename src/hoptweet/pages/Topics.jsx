@@ -1,17 +1,22 @@
 import React from 'react';
 import { useContext, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { fetchTweets, topicFilter } from '../api/fetch-tweets';
 import TweetForm from '../components/TweetForm';
 import TweetList from '../components/TweetList';
 import { TweetSearch } from '../components/TweetSearch';
+import { SessionContext } from '../hooks/SessionProvider';
 import { useSlug } from '../hooks/useSlug';
 import { WorkspaceContext } from '../hooks/WorkspaceProvider';
 
-export const Topics = () => {
-  const navigate = useNavigate();
+export const Topics = (props) => {
+  const { session } = props;
+  const { addSession } = useContext(SessionContext);
+
   const workspace = useContext(WorkspaceContext);
-  let { topicSlug } = useParams();
+  let topicSlug;
+  if (session.params && session.params.topic) {
+    topicSlug = session.params.topic;
+  }
 
   const [topic, setTopic] = useState(topicSlug);
   const [tweets, setTweets] = useState([]);
@@ -25,8 +30,12 @@ export const Topics = () => {
 
   const search = (newTopic) => {
     setTopic(newTopic);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    navigate(`/topics/${newTopic}`);
+    addSession({
+      type: 'topics',
+      params: {
+        topic: newTopic,
+      },
+    });
   };
 
   useEffect(() => {
