@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Col, Row, Select, Typography } from 'antd';
 import styled from 'styled-components';
 import LogoSvg from "../assets/logo.svg";
@@ -16,7 +16,7 @@ import TradesTable from '../components/TradesTable';
 // import LinkAddress from '../components/LinkAddress';
 import DeprecatedMarketsInstructions from '../components/DeprecatedMarketsInstructions';
 import {
-  DeleteOutlined,
+  DeleteOutlined, WindowsOutlined,
   // InfoCircleOutlined,
   // PlusCircleOutlined,
 } from '@ant-design/icons';
@@ -190,7 +190,6 @@ function TradePageInner() {
           >
             <Col style={{paddingRight: 0,paddingLeft: 2}}>
               <MarketSelector
-                
                 width={width}
                 markets={markets}
                 setHandleDeprecated={setHandleDeprecated}
@@ -403,6 +402,37 @@ const DeprecatedMarketsPage = ({ switchToLiveMarkets }) => {
 };
 
 const RenderNormal = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
+
+  const [windowSize, setWindowSize]= useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  })
+  useEffect(()=>{
+    const resize = ()=>{
+      
+      setTimeout(()=>{
+        console.log("setnewSize")
+        setWindowSize({
+          width: window.innerWidth,
+          height: window.innerHeight
+        })
+      },2000)
+    }
+    window.addEventListener('resize', resize);
+    return ()=>{
+      window.removeEventListener('resize',resize)
+    }
+  },[])
+  const Chart = useMemo(()=>{
+    console.log('rerendering component')
+    return(<TVChartContainer
+      width={windowSize.width}
+      height={windowSize.height}
+      isMobileView={false}
+      depth={13}
+      smallScreen={true} onPrice={onPrice} onSize={onSize}
+    />)},[windowSize])
+  
   return (
     <Row
       style={{

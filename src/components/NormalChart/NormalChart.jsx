@@ -80,7 +80,13 @@ const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,d
         ) }
 
         {/* buttons row */}
-        <div className="switch-container" id="switch-container">
+        <div className="switch-container"
+          style={{
+            position: 'relative',
+            zIndex:2
+          }}
+          id="switch-container"
+        >
           {/* time buttons */}
           <div className="switcher">
             {intervals.map((item,index) => (
