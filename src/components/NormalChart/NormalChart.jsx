@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LineSvg from './line.svg';
 import CandleSvg from './candles.svg';
 import OrderBookSvg from './order-book.svg'
@@ -49,9 +49,28 @@ const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,d
     setCurrentInterval(interaval);
     setBarSize(barSize);
   };
+
+  const [windowSize, setWindowSize]= useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  })
+  useEffect(()=>{
+    const resize = ()=>{
+      setCurrentChart('none')
+      setTimeout(()=>{
+        setCurrentChart(charts.lineChart)
+      },0)
+    }
+    window.addEventListener('resize', resize);
+    return ()=>{
+      window.removeEventListener('resize',resize)
+    }
+  },[])
+
   return (
     <div className="buffer">
       <div className="container">
+        
         {currentChart === charts.candleChart && (
           <CandleSeries
             interval={currentInteraval}

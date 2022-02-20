@@ -403,35 +403,8 @@ const DeprecatedMarketsPage = ({ switchToLiveMarkets }) => {
 
 const RenderNormal = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
 
-  const [windowSize, setWindowSize]= useState({
-    width: window.innerWidth,
-    height: window.innerHeight
-  })
-  useEffect(()=>{
-    const resize = ()=>{
-      
-      setTimeout(()=>{
-        console.log("setnewSize")
-        setWindowSize({
-          width: window.innerWidth,
-          height: window.innerHeight
-        })
-      },2000)
-    }
-    window.addEventListener('resize', resize);
-    return ()=>{
-      window.removeEventListener('resize',resize)
-    }
-  },[])
-  const Chart = useMemo(()=>{
-    console.log('rerendering component')
-    return(<TVChartContainer
-      width={windowSize.width}
-      height={windowSize.height}
-      isMobileView={false}
-      depth={13}
-      smallScreen={true} onPrice={onPrice} onSize={onSize}
-    />)},[windowSize])
+  
+  
   
   return (
     <Row
