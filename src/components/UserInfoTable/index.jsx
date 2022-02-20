@@ -25,12 +25,12 @@ export default function Index() {
         <TabPane tab="Orders" key="orders-only">
           <FillsTable />
         </TabPane>
-        <TabPane tab="Open Orders" key="orders">
+        {/* <TabPane tab="Open Orders" key="orders">
           <OpenOrdersTab />
         </TabPane>
         <TabPane tab="Recent Trade History" key="fills">
           <FillsTable />
-        </TabPane>
+        </TabPane> */}
         <TabPane tab="Balances" key="balances">
           <BalancesTab />
         </TabPane>
