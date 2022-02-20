@@ -73,6 +73,7 @@ const InversedFlex = styled.div`
   }
 `
 
+
 export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
   const markPrice = useMarkPrice();
   const [orderbook] = useOrderbook();
@@ -139,7 +140,7 @@ export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
   return (
     <FloatingElement
       style={
-        smallScreen ? { flex: 1 } : { minHeight: '580px', overflow: 'hidden' }
+        smallScreen ? { flex: 1,backgroundColor:'transparent' } : { minHeight: '580px', overflow: 'hidden', backgroundColor:'transparent' }
       }
     >
       <Title style={{textAlign:'center'}}>Orderbook</Title>
