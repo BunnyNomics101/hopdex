@@ -404,8 +404,6 @@ const DeprecatedMarketsPage = ({ switchToLiveMarkets }) => {
 const RenderNormal = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
 
   
-  
-  
   return (
     <Row
       style={{

@@ -70,33 +70,37 @@ const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,d
   return (
     <div className="buffer">
       <div className="container">
-        
-        {currentChart === charts.candleChart && (
-          <CandleSeries
-            interval={currentInteraval}
-            barSize={barSize}
-            width={width}
-            height={height}
-            isMobileView={isMobileView}
-          />
-        )}
-        {currentChart === charts.lineChart && (
-          <LineSeries
-            interval={currentInteraval}
-            barSize={barSize}
-            width={width}
-            height={height}
-            isMobileView={isMobileView}
-          />
-        )}
-        {currentChart === charts.orderBook && (
-          <Row style={{width: '100%', minHeight: '500px',alignItems:'center'}} >
-            <Col flex="auto" >
-              <Orderbook depth={depth} smallScreen={smallScreen} onPrice={onPrice} onSize={onSize} />
-            </Col>
-          </Row>
-          
-        ) }
+        <div style={{
+            height: isMobileView?'450px':'550px',
+            width: '100%'
+        }}>
+          {currentChart === charts.candleChart && (
+            <CandleSeries
+              interval={currentInteraval}
+              barSize={barSize}
+              width={width}
+              height={height}
+              isMobileView={isMobileView}
+            />
+          )}
+          {currentChart === charts.lineChart && (
+            <LineSeries
+              interval={currentInteraval}
+              barSize={barSize}
+              width={width}
+              height={height}
+              isMobileView={isMobileView}
+            />
+          )}
+          {currentChart === charts.orderBook && (
+            <Row style={{width: '100%', minHeight: '500px',alignItems:'center'}} >
+              <Col flex="auto" >
+                <Orderbook depth={depth} smallScreen={smallScreen} onPrice={onPrice} onSize={onSize} />
+              </Col>
+            </Row>
+            
+          ) }
+        </div>
 
         {/* buttons row */}
         <div className="switch-container"
