@@ -51,15 +51,20 @@ const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,d
   };
 
   useEffect(()=>{
+    let timeOut; 
+
     const resize = ()=>{
       setCurrentChart('none')
-      setTimeout(()=>{
+      timeOut = setTimeout(()=>{
         setCurrentChart(charts.lineChart)
       },0)
     }
     window.addEventListener('resize', resize);
     return ()=>{
       window.removeEventListener('resize',resize)
+      if(timeOut){
+        clearTimeout(timeOut)
+      }
     }
   },[])
 

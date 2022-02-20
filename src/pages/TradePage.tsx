@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Col, Row, Select, Typography } from 'antd';
 import styled from 'styled-components';
 import LogoSvg from "../assets/logo.svg";
@@ -16,7 +16,7 @@ import TradesTable from '../components/TradesTable';
 // import LinkAddress from '../components/LinkAddress';
 import DeprecatedMarketsInstructions from '../components/DeprecatedMarketsInstructions';
 import {
-  DeleteOutlined, WindowsOutlined,
+  DeleteOutlined,
   // InfoCircleOutlined,
   // PlusCircleOutlined,
 } from '@ant-design/icons';

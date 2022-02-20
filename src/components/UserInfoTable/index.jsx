@@ -1,10 +1,13 @@
 import BalancesTable from './BalancesTable';
-import OpenOrderTable from './OpenOrderTable';
+// import OpenOrderTable from './OpenOrderTable';
 import React from 'react';
 import { Tabs, Typography } from 'antd';
 import FillsTable from './FillsTable';
 import FloatingElement from '../layout/FloatingElement';
-import { useOpenOrders, useBalances } from '../../utils/markets';
+import { 
+  // useOpenOrders, 
+  useBalances 
+} from '../../utils/markets';
 
 const { TabPane } = Tabs;
 
@@ -44,11 +47,11 @@ export default function Index() {
   );
 }
 
-const OpenOrdersTab = () => {
-  const openOrders = useOpenOrders();
+// const OpenOrdersTab = () => {
+//   const openOrders = useOpenOrders();
 
-  return <OpenOrderTable openOrders={openOrders} />;
-};
+//   return <OpenOrderTable openOrders={openOrders} />;
+// };
 
 const BalancesTab = () => {
   const balances = useBalances();
