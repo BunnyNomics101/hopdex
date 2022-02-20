@@ -50,10 +50,6 @@ const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,d
     setBarSize(barSize);
   };
 
-  const [windowSize, setWindowSize]= useState({
-    width: window.innerWidth,
-    height: window.innerHeight
-  })
   useEffect(()=>{
     const resize = ()=>{
       setCurrentChart('none')
@@ -71,8 +67,12 @@ const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,d
     <div className="buffer">
       <div className="container">
         <div style={{
-            height: isMobileView?'450px':'550px',
-            width: '100%'
+            height: '550px',
+            width: '100%',
+            display:'flex',
+            justifyContent:'center',
+            alignItems:'center'
+
         }}>
           {currentChart === charts.candleChart && (
             <CandleSeries
