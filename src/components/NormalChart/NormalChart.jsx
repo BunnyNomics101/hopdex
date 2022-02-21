@@ -19,14 +19,7 @@ const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,d
   const [currentInteraval, setCurrentInterval] = useState('1d');
   const [currentChart, setCurrentChart] = useState(charts.lineChart);
   const [barSize, setBarSize] = useState(10);
-  const onChartsChangeHandler = (table= false) => {
-    console.log(height);
-    if(table===true){
-      setCurrentChart((currentChart===charts.orderBook)? 
-        charts.lineChart:
-        charts.orderBook)
-      return;
-    }
+  const onChartsChangeHandler = () => {
     const toggledChart =
       currentChart === charts.candleChart
         ? charts.lineChart
@@ -145,7 +138,7 @@ const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,d
           <div>
             <button 
               className={"switch-to-order-book "+((currentChart===charts.orderBook)?'shown':'')}
-              onClick = {()=>{onChartsChangeHandler(true)}}
+              onClick = {()=>{setCurrentChart(charts.orderBook)}}
             >
               <img src={OrderBookSvg} alt="Book" style={{ width: 24 }} />
             </button>
