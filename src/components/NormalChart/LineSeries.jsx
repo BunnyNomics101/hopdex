@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef,useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { createChart, isBusinessDay } from 'lightweight-charts';
 import { Colors, getChartOptions } from './chartOptions';
 import { Spin } from 'antd';
@@ -62,6 +62,7 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
           return [...seriesData, ...acc];
         }, []);
         lineSeriesChart.setData(currentData);
+        outOfChart(currentData);
         chart.timeScale().fitContent();
 
         // chart.applyOptions({
@@ -77,9 +78,10 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
       .finally(() => {
         setState((prev) => ({ ...prev, loading: false }));
       });
-    outOfChart(currentData);
+    
+    // outOfChart(currentData);
     chart.timeScale().fitContent();
-  },[interval, market]);
+  }, [interval, market]);
 
   const outOfChart = (currentData) => {
     if (
@@ -89,7 +91,7 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
     ) {
       return;
     }
-    var previousPriceObj = currentData[currentData.length - 2]; 
+    var previousPriceObj = currentData[currentData.length - 2];
     var currentPriceObj = currentData[currentData.length - 1];
     var previousPrice;
     var price;
@@ -124,10 +126,13 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
 
     var priceStr = formatPrice(price);
 
-    tooltipRef.current.innerHTML = `<div class="tooltip__price">${priceStr}</div><div class="tooltip__time">${differenceStr} ${dateStr}</div>`;
-    tooltipRef.current.style.top = 14 + 'px';
-    tooltipRef.current.style.left = 12 + 'px';
-    tooltipRef.current.style.display = 'block';
+    
+    const currentToolTip = tooltipRef.current
+    if(!currentToolTip) return ;
+    currentToolTip.innerHTML = `<div class="tooltip__price">${priceStr}</div><div class="tooltip__time">${differenceStr} ${dateStr}</div>`;
+    currentToolTip.style.top = 14 + 'px';
+    currentToolTip.style.left = 12 + 'px';
+    currentToolTip.style.display = 'block';
   };
 
   const subscribeHandler = useCallback((param) => {
@@ -154,9 +159,9 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
 
       previousPriceObj =
         currentData[
-          currentData.indexOf(
-            currentData.find((currentData) => currentData.time === param.time),
-          ) - 1
+        currentData.indexOf(
+          currentData.find((currentData) => currentData.time === param.time),
+        ) - 1
         ];
       if (typeof price !== 'object') {
         if (typeof previousPriceObj !== 'undefined') {
@@ -184,8 +189,8 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
       tooltipRef.current.style.top = 14 + 'px';
       tooltipRef.current.style.display = 'block';
     }
-  },[height, width]);
-  
+  }, [height, width]);
+
   // Life Cycles
   useEffect(() => {
     if (chart) {
@@ -216,14 +221,16 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
       const newRect = entries[0].contentRect;
       chart.applyOptions({ height: newRect.height, width: newRect.width });
     }).observe(chartRef.current);
-  }, [width, height,subscribeHandler]);
+  }, [width, height, subscribeHandler]);
 
-  
+
 
   useEffect(() => {
     setData()
     // chart.timeScale().fitContent();
-  }, [interval, market,setData]);
+  }, [interval, market, setData]);
+
+
 
   return [
     <div
@@ -248,6 +255,7 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
       ref={chartRef}
     >
       <div className="tooltip" ref={tooltipRef}></div>
+
     </div>,
   ];
 };
