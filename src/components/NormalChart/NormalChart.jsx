@@ -100,6 +100,7 @@ const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,d
               width={width}
               height={height}
               isMobileView={isMobileView}
+              onPrice={onPrice}
             />
           )}
           {currentChart === charts.orderBook && (

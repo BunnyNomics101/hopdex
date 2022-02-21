@@ -11,6 +11,7 @@ import {
 } from './chartUtil';
 import { useMarket, USE_MARKETS } from '../../utils/markets';
 import { zipWith } from 'lodash';
+import { relative } from 'path';
 
 let lineSeriesChart = null;
 let currentData = [];
@@ -18,7 +19,7 @@ let currentData = [];
 // var height = Math.round(width * 0.5625);
 var toolTipWidth = 125;
 let chart = null;
-const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
+const LineSeries = ({ interval, barSize, width, height, isMobileView, onPrice }) => {
   const { market } = useMarket();
   const chartRef = useRef(null);
   const tooltipRef = useRef();
@@ -78,7 +79,7 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
       .finally(() => {
         setState((prev) => ({ ...prev, loading: false }));
       });
-    
+
     // outOfChart(currentData);
     chart.timeScale().fitContent();
   }, [interval, market]);
@@ -126,13 +127,19 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
 
     var priceStr = formatPrice(price);
 
+
     
-    const currentToolTip = tooltipRef.current
-    if(!currentToolTip) return ;
-    currentToolTip.innerHTML = `<div class="tooltip__price">${priceStr}</div><div class="tooltip__time">${differenceStr} ${dateStr}</div>`;
-    currentToolTip.style.top = 14 + 'px';
-    currentToolTip.style.left = 12 + 'px';
-    currentToolTip.style.display = 'block';
+
+    setToolTipStrings({
+      priceStr,dateStr,differenceStr,
+      leftPosition:12,
+      price
+    })
+    
+    // currentToolTip.innerHTML = `<div class="tooltip__price">${priceStr}</div><div class="tooltip__time">${differenceStr} ${dateStr}</div>`;
+    // currentToolTip.style.top = 14 + 'px';
+    // currentToolTip.style.left = 12 + 'px';
+    // currentToolTip.style.display = 'block';
   };
 
   const subscribeHandler = useCallback((param) => {
@@ -182,12 +189,22 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
 
       var priceStr = formatPrice(price);
 
-      tooltipRef.current.innerHTML = `<div class="tooltip__price">${priceStr}</div><div class="tooltip__time">${differenceStr} ${dateStr}</div>`;
+      // tooltipRef.current.innerHTML = `<div class="tooltip__price">${priceStr}</div><div class="tooltip__time">${differenceStr} ${dateStr}</div>`;
       var left = param.point.x - toolTipWidth / 2;
       left = Math.max(0, Math.min(width - toolTipWidth, left));
-      tooltipRef.current.style.left = left + 'px';
-      tooltipRef.current.style.top = 14 + 'px';
-      tooltipRef.current.style.display = 'block';
+      
+      setToolTipStrings(prev=>({
+        ...prev, 
+        priceStr, 
+        leftPosition: left, 
+        differenceStr,
+        dateStr
+      }))
+
+      
+      // tooltipRef.current.style.left = left + 'px';
+      // tooltipRef.current.style.top = 14 + 'px';
+      // tooltipRef.current.style.display = 'block';
     }
   }, [height, width]);
 
@@ -230,7 +247,15 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
     // chart.timeScale().fitContent();
   }, [interval, market, setData]);
 
-
+  const [tooltipStrings, setToolTipStrings] = useState({
+    price: 0,
+    priceStr: "0",
+    differenceStr:"0",
+    dateStr:"0",
+    topPosition: 14,
+    leftPosition: 12
+  })
+  
 
   return [
     <div
@@ -254,7 +279,17 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView }) => {
       }}
       ref={chartRef}
     >
-      <div className="tooltip" ref={tooltipRef}></div>
+      <div className="tooltip" style={{
+          top: tooltipStrings.topPosition + 'px',
+          left: tooltipStrings.leftPosition + 'px',
+          display: 'block'
+        }} 
+        dangerouslySetInnerHTML={{
+          __html: `<div class="tooltip__price">${tooltipStrings.priceStr}</div><div class="tooltip__time">${tooltipStrings.differenceStr} ${tooltipStrings.dateStr}</div>`
+        }}
+        onClick={()=>{console.log(tooltipStrings.price)}}
+      >
+      </div>
 
     </div>,
   ];
