@@ -20,6 +20,7 @@ const SizeTitle = styled(Row)`
 const MarkPriceTitle = styled(Row)`
   padding: 20px 0 14px;
   font-weight: 700;
+  cursor:pointer;
 `;
 
 const Line = styled.div`
@@ -144,7 +145,7 @@ export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
       }
     >
       <Title style={{textAlign:'center'}}>Orderbook</Title>
-      <MarkPriceComponent markPrice={markPrice} />
+      <MarkPriceComponent markPrice={markPrice} onPrice={()=>{onPrice(markPrice)}} />
       <FlexDiv>
         <div>
           <SizeTitle>
@@ -248,7 +249,7 @@ const OrderbookRow = React.memo(
 );
 
 const MarkPriceComponent = React.memo(
-  ({ markPrice }) => {
+  ({ markPrice,onPrice }) => {
     const { market } = useMarket();
     const previousMarkPrice = usePrevious(markPrice);
 
@@ -265,7 +266,7 @@ const MarkPriceComponent = React.memo(
       markPrice.toFixed(getDecimalCount(market.tickSize));
 
     return (
-      <MarkPriceTitle justify="center">
+      <MarkPriceTitle justify="center" onClick={onPrice}>
         <Col style={{ color: markPriceColor }}>
           {markPrice > previousMarkPrice && (
             <ArrowUpOutlined style={{ marginRight: 5 }} />
