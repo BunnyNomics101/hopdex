@@ -287,7 +287,9 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView, onPrice })
         dangerouslySetInnerHTML={{
           __html: `<div class="tooltip__price">${tooltipStrings.priceStr}</div><div class="tooltip__time">${tooltipStrings.differenceStr} ${tooltipStrings.dateStr}</div>`
         }}
-        onClick={()=>{console.log(tooltipStrings.price)}}
+        onClick={()=>{
+          onPrice(tooltipStrings.price)
+        }}
       >
       </div>
 
