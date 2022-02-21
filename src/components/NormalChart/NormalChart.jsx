@@ -71,7 +71,7 @@ const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,d
         clearTimeout(timeOut)
       }
     }
-  },[])
+  },[isMobileView,isTabletView])
 
   return (
     <div className="buffer">

@@ -11,7 +11,6 @@ import {
 } from './chartUtil';
 import { useMarket, USE_MARKETS } from '../../utils/markets';
 import { zipWith } from 'lodash';
-import { relative } from 'path';
 
 let lineSeriesChart = null;
 let currentData = [];
@@ -22,7 +21,6 @@ let chart = null;
 const LineSeries = ({ interval, barSize, width, height, isMobileView, onPrice }) => {
   const { market } = useMarket();
   const chartRef = useRef(null);
-  const tooltipRef = useRef();
   const [state, setState] = useState({ loading: false });
 
   // // Functions
