@@ -613,6 +613,7 @@ export function useFills(limit = 100) {
   const { marketName } = useMarket();
   const fills = _useUnfilteredTrades(limit);
   const [openOrdersAccounts] = useOpenOrdersAccounts();
+
   if (!openOrdersAccounts || openOrdersAccounts.length === 0) {
     return null;
   }

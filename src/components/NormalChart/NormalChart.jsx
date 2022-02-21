@@ -15,7 +15,7 @@ const charts = {
   lineChart: 'Line Chart',
   orderBook: 'Order Boot'
 };
-const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,depth=7 }) => {
+const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,depth=7,isTabletView=false }) => {
   const [currentInteraval, setCurrentInterval] = useState('1d');
   const [currentChart, setCurrentChart] = useState(charts.lineChart);
   const [barSize, setBarSize] = useState(10);
@@ -52,12 +52,24 @@ const NormalChart = ({ width, height, isMobileView,smallScreen,onPrice, onSize,d
 
   useEffect(()=>{
     let timeOut; 
+    const windowSize = {
+      width: window.innerWidth,
+      height: window.innerHeight
+    }
 
     const resize = ()=>{
+      if((window.innerWidth === windowSize.width)&&(isMobileView||isTabletView)){
+        //not triggering rerenderer
+        return
+      }
+
       setCurrentChart('none')
       timeOut = setTimeout(()=>{
         setCurrentChart(charts.lineChart)
       },0)
+
+      windowSize.width= window.innerWidth;
+      windowSize.height= window.innerHeight;
     }
     window.addEventListener('resize', resize);
     return ()=>{

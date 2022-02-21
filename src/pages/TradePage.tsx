@@ -452,7 +452,9 @@ const RenderSmall = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
   return (
     <>
       <Row>
-        <TVChartContainer width={width} height={height} isMobileView={false} 
+        <TVChartContainer width={width} height={500} 
+          isTabletView={true}
+          isMobileView={false} 
           smallScreen={true}
           depth={13}
           onPrice={onPrice}
@@ -494,7 +496,8 @@ const RenderSmaller = ({
   return (
     <>
       <Row>
-        <TVChartContainer width={width} height={height} isMobileView={true}
+        <TVChartContainer width={width} height={400} 
+          isMobileView={true}
           smallScreen={true} onPrice={onPrice} onSize={onSize}
         />
       </Row>

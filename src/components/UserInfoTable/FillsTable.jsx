@@ -113,6 +113,13 @@ export default function FillsTable({
     key: `${fill.orderId}${fill.side}`,
     liquidity: fill.eventFlags.maker ? 'Maker' : 'Taker',
   }))
+  
+  // const dataSourceFill = [{
+  //   marketName: 'somethng',
+  //   size: 1000,
+  //   price: 2,
+  //   key: '0'
+  // }]
 
   const dataSourceOpenOrders = (openOrders || []).map((order) => ({
     ...order,
