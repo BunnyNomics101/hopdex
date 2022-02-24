@@ -1,4 +1,4 @@
-import {Market, MARKETS, OpenOrders, Orderbook, TOKEN_MINTS, TokenInstructions,} from '@project-serum/serum';
+import {Market, OpenOrders, Orderbook, TOKEN_MINTS, TokenInstructions,} from '@project-serum/serum';
 import {PublicKey} from '@solana/web3.js';
 import React, {useContext, useEffect, useState} from 'react';
 import {divideBnToNumber, floorToDecimal, getTokenMultiplierFromDecimals, sleep, useLocalStorageState,} from './utils';
@@ -24,21 +24,39 @@ import {WRAPPED_SOL_MINT} from '@project-serum/serum/lib/token-instructions';
 import {Order} from '@project-serum/serum/lib/market';
 import BonfidaApi from './bonfidaConnector';
 
-const USED_MARKETS = [
-  "BTC/USDC",
-  "SOL/USDC",
-  "USDT/USDC",
-  "ETH/USDC",
-  "BUNNY/USDC"
+// const FILTERED_MARKETS = MARKETS.filter(market=> (USED_MARKETS.includes(market.name)&& (market.deprecated===false)))
+const FILTERED_MARKETS = [
+  {
+    address: new PublicKey( "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"),
+    deprecated: false,
+    name: "SOL/USDC",
+    programId: new PublicKey("9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin")
+  },
+  {
+    name: "ETH/USDC",
+    programId: new PublicKey("9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin"),
+    deprecated: false,
+    address: new PublicKey("8Gmi2HhZmwQPVdCwzS7CM66MGstMXPcTVHA7jF19cLZz")
+  },
+  {
+    address: new PublicKey("A8YFbxQYFVqKZaoYJLLUVcQiWP7G2MeEgW5wsAQgMvFw"),
+    deprecated: false,
+    name: "BTC/USDC",
+    programId: new PublicKey("9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin")
+  },
+  {
+    address: new PublicKey("77quYg4MGneUdjgXCunt9GgM1usmrxKY31twEy3WHwcS"),
+    deprecated: false,
+    name: "USDT/USDC",
+    programId: new PublicKey("9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin")
+  },
+  {
+    address: new PublicKey("AvVJcsk26dYHXS9Uya2tkDdSD3i59ubvo1qYKB2w2j5C"),
+    deprecated: false,
+    name:"BUNNY/USDC",
+    programId: new PublicKey("9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin")
+  }
 ]
-
-const FILTERED_MARKETS = MARKETS.filter(market=> (USED_MARKETS.includes(market.name)&& (market.deprecated===false)))
-FILTERED_MARKETS.push({
-  address: new PublicKey("AvVJcsk26dYHXS9Uya2tkDdSD3i59ubvo1qYKB2w2j5C"),
-  deprecated: false,
-  name:"BUNNY/USDC",
-  programId: FILTERED_MARKETS[0].programId
-})
 
 // Used in debugging, should be false in production
 const _IGNORE_DEPRECATED = false;

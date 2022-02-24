@@ -229,13 +229,19 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView, onPrice })
     });
     chart.subscribeCrosshairMove(subscribeHandler);
     chart.timeScale().fitContent();
-    new ResizeObserver((entries) => {
+    const resizeObserver = new ResizeObserver((entries) => {
       if (entries.length === 0 || entries[0].target !== chartRef.current) {
         return;
       }
       const newRect = entries[0].contentRect;
       chart.applyOptions({ height: newRect.height, width: newRect.width });
-    }).observe(chartRef.current);
+    })
+    
+    resizeObserver.observe(chartRef.current);
+
+    return ()=>{
+      resizeObserver.disconnect()
+    }
   }, [width, height, subscribeHandler]);
 
 
