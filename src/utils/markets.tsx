@@ -24,12 +24,30 @@ import {WRAPPED_SOL_MINT} from '@project-serum/serum/lib/token-instructions';
 import {Order} from '@project-serum/serum/lib/market';
 import BonfidaApi from './bonfidaConnector';
 
+const USED_MARKETS = [
+  "BTC/USDC",
+  "SOL/USDC",
+  "USDT/USDC",
+  "ETH/USDC",
+  "BUNNY/USDC"
+]
+
+// const wanted = MARKETS.filter(market=>market.name==="ETH/USDC")
+// console.log(wanted.map(one=>({
+//   ...one, 
+//   address: one.address.toString(),
+//   programId: one.programId.toString()
+// })))
+
+const FILTERED_MARKETS = MARKETS.filter(market=> (USED_MARKETS.includes(market.name)&& (market.deprecated===false)))
+
 // Used in debugging, should be false in production
 const _IGNORE_DEPRECATED = false;
 
 export const USE_MARKETS: MarketInfo[] = _IGNORE_DEPRECATED
-  ? MARKETS.map((m) => ({ ...m, deprecated: false }))
-  : MARKETS;
+  ? FILTERED_MARKETS.map((m) => ({ ...m, deprecated: false }))
+  : FILTERED_MARKETS;
+
 
 export function useMarketsList() {
   return USE_MARKETS.filter(({ name, deprecated }) => !deprecated && !process.env.REACT_APP_EXCLUDE_MARKETS?.includes(name));

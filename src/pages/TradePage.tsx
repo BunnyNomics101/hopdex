@@ -293,6 +293,7 @@ function MarketSelector({
     setMarketAddress(marketAddress);
 
     console.log(market?.address.toBase58())
+    console.log(market?.address)
   };
 
   const extractBase = (a) => a.split('/')[0];
