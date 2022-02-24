@@ -32,19 +32,12 @@ const USED_MARKETS = [
   "BUNNY/USDC"
 ]
 
-const wanted = MARKETS.filter(market=>market.name==="SOL/USDC")
-console.log(wanted.map(one=>({
-  ...one, 
-  address: one.address.toString(),
-  programId: one.programId.toString()
-})))
-
 const FILTERED_MARKETS = MARKETS.filter(market=> (USED_MARKETS.includes(market.name)&& (market.deprecated===false)))
 FILTERED_MARKETS.push({
   address: new PublicKey("AvVJcsk26dYHXS9Uya2tkDdSD3i59ubvo1qYKB2w2j5C"),
   deprecated: false,
   name:"BUNNY/USDC",
-  programId: new PublicKey("9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin")
+  programId: FILTERED_MARKETS[0].programId
 })
 
 // Used in debugging, should be false in production
