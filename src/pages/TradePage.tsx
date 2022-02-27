@@ -47,6 +47,7 @@ const Wrapper = styled.div`
 
 const StyledSelect = styled(Select)`
   width: 150px; height: 40px;
+  font-size: 14px;
   @media(max-width: 450px){
     width: 120px;
   }

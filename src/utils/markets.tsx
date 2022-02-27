@@ -54,7 +54,7 @@ const FILTERED_MARKETS = [
     address: new PublicKey("AvVJcsk26dYHXS9Uya2tkDdSD3i59ubvo1qYKB2w2j5C"),
     deprecated: false,
     name:"BUNNY/USDC",
-    programId: new PublicKey("EUqojwWA2rd19FZrzeBncJsm38Jm1hEhE3zsmX3bRc2o")
+    programId: new PublicKey("9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin")
   }
 ]
 

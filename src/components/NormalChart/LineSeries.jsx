@@ -212,6 +212,7 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView, onPrice })
       chart.unsubscribeCrosshairMove(subscribeHandler);
       chart.timeScale().fitContent();
     }
+    if(!chartRef.current) return
     // const dynamicHeight = isMobileView ? 380 : (60 * height) / 100;
     chart = createChart(
       chartRef.current,
@@ -241,6 +242,7 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView, onPrice })
 
     return ()=>{
       resizeObserver.disconnect()
+      
     }
   }, [width, height, subscribeHandler]);
 
