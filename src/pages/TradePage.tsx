@@ -468,20 +468,21 @@ const RenderSmall = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
       //   height: '900px',
       // }}
       >
-        <Col flex="auto" style={{ display: 'flex' }}>
-          <TradesTable smallScreen={true} />
-        </Col>
         <Col
           flex="500px"
           style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
         >
           <TradeForm setChangeOrderRef={onChangeOrderRef} />
           {/* <StandaloneBalancesDisplay /> */}
+        </Col> 
+        <Col flex="500px 1 0">
+          <UserInfoTable />
         </Col>
+        
       </Row>
       <Row>
-        <Col flex="auto">
-          <UserInfoTable />
+        <Col flex="auto" style={{ display: 'flex' }}>
+          <TradesTable smallScreen={true} />
         </Col>
       </Row>
     </>
@@ -514,15 +515,17 @@ const RenderSmaller = ({
       
       <Row>
         <Col flex="auto">
-          <TradesTable smallScreen={true} />
+          <UserInfoTable />
         </Col>
       </Row>
 
       <Row>
         <Col flex="auto">
-          <UserInfoTable />
+          <TradesTable smallScreen={true} />
         </Col>
       </Row>
+
+      
       <div style={{height: '30vh'}}></div>
     </>
   );
