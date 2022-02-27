@@ -43,7 +43,7 @@ export default function Index() {
             <FeesTable />
           </TabPane>
         ) : null} */}
-        <TabPane tab="Free tier" key="free-tier">
+        <TabPane tab="Fee tier" key="free-tier">
           <p style={{
             padding: '30px 40px',
             backgroundColor: '#202834',
@@ -53,7 +53,7 @@ export default function Index() {
             Hopdex is based on Serum's liquidity and share the same {' '}
             <a 
               rel="noopener noreferrer" 
-              target="_blank" 
+              target="_blank@" 
               href="https://docs.projectserum.com/appendix/fees"
             >fee tier</a> 
           </p>
