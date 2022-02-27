@@ -124,10 +124,7 @@ const LineSeries = ({ interval, barSize, width, height, isMobileView, onPrice })
     }
 
     var priceStr = formatPrice(price);
-
-
     
-
     setToolTipStrings({
       priceStr,dateStr,differenceStr,
       leftPosition:12,

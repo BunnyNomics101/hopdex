@@ -79,9 +79,9 @@ export const formatDifference = (price, previousPrice) => {
 export const formatPrice = (price) => {
   var hundredths = (price % 1).toFixed(2).toString().slice(1);
   var hundreds = Math.floor(price % 1000);
-  while (hundreds.toString().length < 3) {
-    hundreds = '0' + hundreds;
-  }
+  // while (hundreds.toString().length < 3) {
+  //   hundreds = '0' + hundreds;
+  // }
   var thousands = Math.floor(price / 1000);
   thousands === 0 ? (thousands = '') : (thousands += ',');
 
