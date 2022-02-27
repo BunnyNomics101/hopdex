@@ -28,6 +28,7 @@ export default function Index() {
         <TabPane tab="Orders" key="orders-only">
           <FillsTable />
         </TabPane>
+        
         {/* <TabPane tab="Open Orders" key="orders">
           <OpenOrdersTab />
         </TabPane>
@@ -42,6 +43,21 @@ export default function Index() {
             <FeesTable />
           </TabPane>
         ) : null} */}
+        <TabPane tab="Free tier" key="free-tier">
+          <p style={{
+            padding: '30px 40px',
+            backgroundColor: '#202834',
+            color: 'rgba(255, 255, 255, 0.3)',
+            fontSize: '1rem'
+          }}>
+            Hopdex is based on Serum's liquidity and share the same {' '}
+            <a 
+              rel="noopener noreferrer" 
+              target="_blank" 
+              href="https://docs.projectserum.com/appendix/fees"
+            >fee tier</a> 
+          </p>
+        </TabPane>
       </Tabs>
     </FloatingElement>
   );
