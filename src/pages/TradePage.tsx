@@ -78,7 +78,7 @@ export default function TradePage() {
 function TradePageInner() {
   const {
     // market,
-    marketName,
+    // marketName,
     customMarkets,
     setCustomMarkets,
     setMarketAddress,
@@ -92,10 +92,10 @@ function TradePageInner() {
     width: window.innerWidth,
   });
 
-  useEffect(() => {
-    // document.title = marketName ? `${marketName} — SolBunny` : 'SolBunny';
-    document.title = 'SolBunny';
-  }, [marketName]);
+  // useEffect(() => {
+  //   // document.title = marketName ? `${marketName} — SolBunny` : 'SolBunny';
+  //   document.title = 'SolBunny';
+  // }, [marketName]);
 
   const changeOrderRef =
     useRef<({ size, price }: { size?: number; price?: number }) => void>();

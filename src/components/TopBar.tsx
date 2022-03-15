@@ -146,8 +146,8 @@ export default function TopBar() {
         //onClick={() => history.push(tradePageUrl)}
         >
           <img src={logo} alt="" />
-          {'SolBunny'}
-        </LogoWrapper>
+          {'Hopdex'} 
+        </LogoWrapper> 
         <Menu
           mode="horizontal"
           //onClick={handleClick}

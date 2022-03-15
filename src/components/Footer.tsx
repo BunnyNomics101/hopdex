@@ -8,13 +8,13 @@ const { useBreakpoint } = Grid;
 
 const footerElements = [
   {
-    description: 'SolBunny Developer Resources',
+    description: 'Hopdex Developer Resources',
     link: helpUrls.developerResources,
   },
   { description: 'Discord', link: helpUrls.discord },
   { description: 'Telegram', link: helpUrls.telegram },
   { description: 'GitHub', link: helpUrls.github },
-  { description: 'Project SolBunny', link: helpUrls.projectSerum },
+  { description: 'Project Hopdex', link: helpUrls.projectSerum },
   { description: 'Solana Network', link: helpUrls.solanaBeach },
 ];
 
