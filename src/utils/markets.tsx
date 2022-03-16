@@ -194,7 +194,7 @@ const _SLOW_REFRESH_INTERVAL = 5 * 1000;
 const _FAST_REFRESH_INTERVAL = 1000;
 
 export const DEFAULT_MARKET = USE_MARKETS.find(
-  ({ name, deprecated }) => name === 'SRM/USDT' && !deprecated,
+  ({ name, deprecated }) => name === 'SOL/USDC' && !deprecated,
 );
 
 export function getMarketDetails(
@@ -309,6 +309,7 @@ export function MarketProvider({ marketAddress, setMarketAddress, children }) {
 export function getTradePageUrl(marketAddress?: string) {
   if (!marketAddress) {
     const saved = localStorage.getItem('marketAddress');
+    console.log(DEFAULT_MARKET) 
     if (saved) {
       marketAddress = JSON.parse(saved);
     }
