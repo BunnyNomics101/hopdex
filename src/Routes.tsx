@@ -25,6 +25,7 @@ export function Routes() {
           <Switch>
             <Route path="/" element={<Navigate to={getTradePageUrl()} />} />
             <Route path="/market/:marketAddress/*" element={<TradePage />} />
+            <Route path="/market" element={<Navigate to={getTradePageUrl()} />} />
             <Route path="/orders" element={<OpenOrdersPage />} />
             <Route path="/balances" element={<BalancesPage />} />
             <Route path="/convert" element={<ConvertPage />} />
