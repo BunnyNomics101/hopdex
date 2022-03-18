@@ -7,8 +7,7 @@ import { useInterval } from '../utils/useInterval';
 import FloatingElement from './layout/FloatingElement';
 import usePrevious from '../utils/usePrevious';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
-import { API_URL } from '../config';
-import axios from 'axios';
+import socket from '../utils/socket';
 
 const Title = styled.div`
   color: rgba(255, 255, 255, 1);
@@ -87,38 +86,48 @@ export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
 
   const [orderbookData, setOrderbookData] = useState(null);
 
-  // useInterval(async () => {
-  //   if (
-  //     !currentOrderbookData.current ||
-  //     JSON.stringify(currentOrderbookData.current) !==
-  //       JSON.stringify(lastOrderbookData.current)
-  //   ) {
-  //     // const fetchedBids = await axios.get(
-  //     //   `${API_URL}/orderbook/bids/${market.address.toBase58()}/${depth}`
-  //     // ).then(response=>{
-  //     //   console.log(response)
-  //     //   return response.data
-  //     // })
-  //     let bids = orderbook?.bids || [];
-  //     let asks = orderbook?.asks || [];
+  useInterval(async () => {
+    if (
+      !currentOrderbookData.current ||
+      JSON.stringify(currentOrderbookData.current) !==
+        JSON.stringify(lastOrderbookData.current)
+    ) {
+      // const fetchedBids = await axios.get(
+      //   `${API_URL}/orderbook/bids/${market.address.toBase58()}/${depth}`
+      // ).then(response=>{
+      //   console.log(response)
+      //   return response.data
+      // })
+      let bids = orderbook?.bids || [];
+      let asks = orderbook?.asks || [];
 
-  //     let sum = (total, [, size], index) =>
-  //       index < depth ? total + size : total;
-  //     let totalSize = bids.reduce(sum, 0) + asks.reduce(sum, 0);
+      let sum = (total, [, size], index) =>
+        index < depth ? total + size : total;
+      let totalSize = bids.reduce(sum, 0) + asks.reduce(sum, 0);
 
-  //     let bidsToDisplay = getCumulativeOrderbookSide(bids, totalSize, false);
-  //     let asksToDisplay = getCumulativeOrderbookSide(asks, totalSize, true);
+      let bidsToDisplay = getCumulativeOrderbookSide(bids, totalSize, false);
+      let asksToDisplay = getCumulativeOrderbookSide(asks, totalSize, true);
 
-  //     currentOrderbookData.current = {
-  //       bids: orderbook?.bids,
-  //       asks: orderbook?.asks,
-  //     };
+      currentOrderbookData.current = {
+        bids: orderbook?.bids,
+        asks: orderbook?.asks,
+      };
 
-  //     setOrderbookData({ bids: bidsToDisplay, asks: asksToDisplay });
-  //   }
-  // }, 250);
+      setOrderbookData({ bids: bidsToDisplay, asks: asksToDisplay });
+    }
+  }, 250);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const listener = socket.on(
+      `orderbook-${market.address.toBase58()}`,
+      (data) => {
+        console.log(data);
+      },
+    );
+    return () => {
+      listener.off();
+    };
+  }, [market]);
 
   useEffect(() => {
     lastOrderbookData.current = {
