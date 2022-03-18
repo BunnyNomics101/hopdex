@@ -23,6 +23,8 @@ import {
 import {WRAPPED_SOL_MINT} from '@project-serum/serum/lib/token-instructions';
 import {Order} from '@project-serum/serum/lib/market';
 import BonfidaApi from './bonfidaConnector';
+import axios from 'axios';
+import { API_URL } from "../config/index";
 
 // const FILTERED_MARKETS = MARKETS.filter(market=> (USED_MARKETS.includes(market.name)&& (market.deprecated===false)))
 const FILTERED_MARKETS = [
@@ -423,8 +425,11 @@ export function useOrderbookAccounts() {
 export function useOrderbook(
   depth = 20,
 ): [{ bids: number[][]; asks: number[][] }, boolean] {
+  
+  
   const { bidOrderbook, askOrderbook } = useOrderbookAccounts();
   const { market } = useMarket();
+  
   const bids =
     !bidOrderbook || !market
       ? []
