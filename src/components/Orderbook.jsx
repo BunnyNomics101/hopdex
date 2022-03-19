@@ -118,6 +118,7 @@ export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
   }, 250);
 
   useEffect(() => {
+    if (!market) return;
     const listener = socket.on(
       `orderbook-${market.address.toBase58()}`,
       (data) => {
