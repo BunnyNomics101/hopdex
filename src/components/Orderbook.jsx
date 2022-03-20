@@ -8,6 +8,8 @@ import FloatingElement from './layout/FloatingElement';
 import usePrevious from '../utils/usePrevious';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import socket from '../utils/socket';
+import { API_URL } from '../config';
+import axios from 'axios';
 
 const Title = styled.div`
   color: rgba(255, 255, 255, 1);
@@ -86,43 +88,82 @@ export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
 
   const [orderbookData, setOrderbookData] = useState(null);
 
-  useInterval(async () => {
-    if (
-      !currentOrderbookData.current ||
-      JSON.stringify(currentOrderbookData.current) !==
-        JSON.stringify(lastOrderbookData.current)
-    ) {
-      // const fetchedBids = await axios.get(
-      //   `${API_URL}/orderbook/bids/${market.address.toBase58()}/${depth}`
-      // ).then(response=>{
-      //   console.log(response)
-      //   return response.data
-      // })
-      let bids = orderbook?.bids || [];
-      let asks = orderbook?.asks || [];
+  // useInterval(async () => {
+  //   if (
+  //     !currentOrderbookData.current ||
+  //     JSON.stringify(currentOrderbookData.current) !==
+  //     JSON.stringify(lastOrderbookData.current)
+  //   ) {
+  //     // const fetchedBids = await axios.get(
+  //     //   `${API_URL}/orderbook/bids/${market.address.toBase58()}/${depth}`
+  //     // ).then(response=>{
+  //     //   console.log(response)
+  //     //   return response.data.map(({price,size})=>[price,size])
+  //     // }).catch(error=>{
+  //     //   console.log(error)
+  //     // })
+  //     let bids = orderbook?.bids || [];
+  //     let asks = orderbook?.asks || [];
 
-      let sum = (total, [, size], index) =>
-        index < depth ? total + size : total;
-      let totalSize = bids.reduce(sum, 0) + asks.reduce(sum, 0);
+  //     console.log('using interva: ', bids, asks)
 
-      let bidsToDisplay = getCumulativeOrderbookSide(bids, totalSize, false);
-      let asksToDisplay = getCumulativeOrderbookSide(asks, totalSize, true);
+  //     let sum = (total, [, size], index) =>
+  //       index < depth ? total + size : total;
+  //     let totalSize = bids.reduce(sum, 0) + asks.reduce(sum, 0);
 
-      currentOrderbookData.current = {
-        bids: orderbook?.bids,
-        asks: orderbook?.asks,
-      };
+  //     let bidsToDisplay = getCumulativeOrderbookSide(bids, totalSize, false);
+  //     let asksToDisplay = getCumulativeOrderbookSide(asks, totalSize, true);
 
-      setOrderbookData({ bids: bidsToDisplay, asks: asksToDisplay });
-    }
-  }, 250);
+  //     // currentOrderbookData.current = {
+  //     //   bids: orderbook?.bids,
+  //     //   asks: orderbook?.asks,
+  //     // };
+
+  //     // setOrderbookData({ bids: bidsToDisplay, asks: asksToDisplay });
+  //   }
+  // }, 1000);
 
   useEffect(() => {
     if (!market) return;
     const listener = socket.on(
       `orderbook-${market.address.toBase58()}`,
       (data) => {
-        console.log(data);
+        if (
+          !currentOrderbookData.current ||
+          JSON.stringify(currentOrderbookData.current) !==
+            JSON.stringify(lastOrderbookData.current)
+        ) {
+          // const fetchedBids = await axios.get(
+          //   `${API_URL}/orderbook/bids/${market.address.toBase58()}/${depth}`
+          // ).then(response=>{
+          //   console.log(response)
+          //   return response.data.map(({price,size})=>[price,size])
+          // }).catch(error=>{
+          //   console.log(error)
+          // })
+          let bids = data.bids.map(({ price, size }) => [price, size]);
+          let asks = data.asks.map(({ price, size }) => [price, size]);
+
+          console.log('using socket:', bids, asks);
+
+          let sum = (total, [, size], index) =>
+            index < depth ? total + size : total;
+          let totalSize = bids.reduce(sum, 0) + asks.reduce(sum, 0);
+
+          let bidsToDisplay = getCumulativeOrderbookSide(
+            bids,
+            totalSize,
+            false,
+          );
+          let asksToDisplay = getCumulativeOrderbookSide(asks, totalSize, true);
+
+          currentOrderbookData.current = {
+            bids: orderbook?.bids,
+            asks: orderbook?.asks,
+          };
+
+          setOrderbookData({ bids: bidsToDisplay, asks: asksToDisplay });
+        }
       },
     );
     return () => {
