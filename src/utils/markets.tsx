@@ -25,6 +25,7 @@ import {Order} from '@project-serum/serum/lib/market';
 import BonfidaApi from './bonfidaConnector';
 import socket from './socket';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 // const FILTERED_MARKETS = MARKETS.filter(market=> (USED_MARKETS.includes(market.name)&& (market.deprecated===false)))
 const FILTERED_MARKETS = [
@@ -452,6 +453,26 @@ export function useOrderbook(
   useEffect(()=>{
     if(!market) return ; 
 
+    //getting data initially
+    axios
+    .get(`${API_URL}/orderbook/bids/${market.address.toBase58()}/20`)
+    .then(response=>{
+      setOrderbook(prev=>({
+        ...prev, 
+        bids: response.data
+      }))
+    })
+
+    axios
+    .get(`${API_URL}/orderbook/asks/${market.address.toBase58()}/20`)
+    .then(response=>{
+      setOrderbook(prev=>({
+        ...prev, 
+        asks: response.data
+      }))
+    })
+
+    //listening for change
     const listener = socket.on(
       `orderbook-${market.address.toBase58()}`,
       data=>{
