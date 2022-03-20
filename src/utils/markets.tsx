@@ -460,7 +460,7 @@ export function useOrderbook(
       const {bids, asks} = response.data;
       setOrderbook(prev=>({
         bids: bids.map(({price,size})=>[price, size]),
-        asks : bids.map(({price,size})=>[price, size])
+        asks : asks.map(({price,size})=>[price, size])
       }))
       console.log('fetched data')
     })
@@ -471,7 +471,7 @@ export function useOrderbook(
       data=>{
         setOrderbook({
           bids: data.bids.map(({price, size})=>[price, size]),
-          asks: data.bids.map(({price, size})=>[price, size])
+          asks: data.asks.map(({price, size})=>[price, size])
         })
       }
     )
