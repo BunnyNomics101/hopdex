@@ -121,7 +121,7 @@ export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
 
       setOrderbookData({ bids: bidsToDisplay, asks: asksToDisplay });
     }
-  }, 1000);
+  }, 250);
 
   // useEffect(() => {
   //   if (!market) return;

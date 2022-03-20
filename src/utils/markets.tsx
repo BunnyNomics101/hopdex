@@ -455,21 +455,14 @@ export function useOrderbook(
 
     //getting data initially
     axios
-    .get(`${API_URL}/orderbook/bids/${market.address.toBase58()}/20`)
+    .get(`${API_URL}/orderbook/${market.address.toBase58()}/20`)
     .then(response=>{
+      const {bids, asks} = response.data;
       setOrderbook(prev=>({
-        ...prev, 
-        bids: response.data
+        bids: bids.map(({price,size})=>[price, size]),
+        asks : bids.map(({price,size})=>[price, size])
       }))
-    })
-
-    axios
-    .get(`${API_URL}/orderbook/asks/${market.address.toBase58()}/20`)
-    .then(response=>{
-      setOrderbook(prev=>({
-        ...prev, 
-        asks: response.data
-      }))
+      console.log('fetched data')
     })
 
     //listening for change
