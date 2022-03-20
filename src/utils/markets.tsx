@@ -23,6 +23,8 @@ import {
 import {WRAPPED_SOL_MINT} from '@project-serum/serum/lib/token-instructions';
 import {Order} from '@project-serum/serum/lib/market';
 import BonfidaApi from './bonfidaConnector';
+import socket from './socket';
+import axios from 'axios';
 
 // const FILTERED_MARKETS = MARKETS.filter(market=> (USED_MARKETS.includes(market.name)&& (market.deprecated===false)))
 const FILTERED_MARKETS = [
@@ -420,23 +422,49 @@ export function useOrderbookAccounts() {
   };
 }
 
+// export function useOrderbook(
+//   depth = 20,
+// ): [{ bids: number[][]; asks: number[][] }, boolean] {
+  
+  
+//   const { bidOrderbook, askOrderbook } = useOrderbookAccounts();
+//   const { market } = useMarket();
+  
+//   const bids =
+//     !bidOrderbook || !market
+//       ? []
+//       : bidOrderbook.getL2(depth).map(([price, size]) => [price, size]);
+//   const asks =
+//     !askOrderbook || !market
+//       ? []
+//       : askOrderbook.getL2(depth).map(([price, size]) => [price, size]);
+//   return [{ bids, asks }, !!bids || !!asks];
+// }
 export function useOrderbook(
-  depth = 20,
-): [{ bids: number[][]; asks: number[][] }, boolean] {
-  
-  
-  const { bidOrderbook, askOrderbook } = useOrderbookAccounts();
-  const { market } = useMarket();
-  
-  const bids =
-    !bidOrderbook || !market
-      ? []
-      : bidOrderbook.getL2(depth).map(([price, size]) => [price, size]);
-  const asks =
-    !askOrderbook || !market
-      ? []
-      : askOrderbook.getL2(depth).map(([price, size]) => [price, size]);
-  return [{ bids, asks }, !!bids || !!asks];
+  depth=20
+){
+  const {market} = useMarket()
+  const [orderbook, setOrderbook] = useState({
+    bids: [],
+    asks: [],
+  })
+
+  useEffect(()=>{
+    if(!market) return ; 
+
+    const listener = socket.on(
+      `orderbook-${market.address.toBase58()}`,
+      data=>{
+        setOrderbook({
+          bids: data.bids.map(({price, size})=>[price, size]),
+          asks: data.bids.map(({price, size})=>[price, size])
+        })
+      }
+    )
+    return ()=>{listener.off()}
+  },[market])
+
+  return [orderbook]
 }
 
 // Want the balances table to be fast-updating, dont want open orders to flicker
