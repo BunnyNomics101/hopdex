@@ -101,8 +101,6 @@ export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
       let bids = orderbook?.bids || [];
       let asks = orderbook?.asks || [];
 
-      console.log('using interva: ', bids, asks);
-
       let sum = (total, [, size], index) =>
         index < depth ? total + size : total;
       let totalSize = bids.reduce(sum, 0) + asks.reduce(sum, 0);

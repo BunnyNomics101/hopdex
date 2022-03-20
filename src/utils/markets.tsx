@@ -462,7 +462,6 @@ export function useOrderbook(
         bids: bids.map(({price,size})=>[price, size]),
         asks : asks.map(({price,size})=>[price, size])
       }))
-      console.log('fetched data')
     })
 
     //listening for change
