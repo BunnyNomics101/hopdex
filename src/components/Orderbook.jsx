@@ -20,7 +20,7 @@ const SizeTitle = styled(Row)`
 const MarkPriceTitle = styled(Row)`
   padding: 20px 0 14px;
   font-weight: 700;
-  cursor:pointer;
+  cursor: pointer;
 `;
 
 const Line = styled.div`
@@ -46,25 +46,25 @@ const Price = styled.div`
 `;
 
 const FlexDiv = styled.div`
-  display:flex;
+  display: flex;
   gap: 10px;
-  &>*{
+  & > * {
     flex: 1;
   }
-`
+`;
 
 const InversedFlex = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: column-reverse;
-  &>* {
+  & > * {
     flex-direction: row-reverse;
-    &>*:first-of-type{
+    & > *:first-of-type {
       text-align: right !important;
     }
-    &>*:last-of-type{
-      text-align: left !important; 
+    & > *:last-of-type {
+      text-align: left !important;
       .line {
-        float:left;
+        float: left;
       }
       .price {
         right: auto;
@@ -72,8 +72,7 @@ const InversedFlex = styled.div`
       }
     }
   }
-`
-
+`;
 
 export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
   const markPrice = useMarkPrice();
@@ -85,12 +84,20 @@ export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
 
   const [orderbookData, setOrderbookData] = useState(null);
 
-  useInterval(() => {
+  useInterval(async () => {
     if (
       !currentOrderbookData.current ||
       JSON.stringify(currentOrderbookData.current) !==
-      JSON.stringify(lastOrderbookData.current)
+        JSON.stringify(lastOrderbookData.current)
     ) {
+      // const fetchedBids = await axios.get(
+      //   `${API_URL}/orderbook/bids/${market.address.toBase58()}/${depth}`
+      // ).then(response=>{
+      //   console.log(response)
+      //   return response.data.map(({price,size})=>[price,size])
+      // }).catch(error=>{
+      //   console.log(error)
+      // })
       let bids = orderbook?.bids || [];
       let asks = orderbook?.asks || [];
 
@@ -109,6 +116,54 @@ export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
       setOrderbookData({ bids: bidsToDisplay, asks: asksToDisplay });
     }
   }, 250);
+
+  // useEffect(() => {
+  //   if (!market) return;
+  //   const listener = socket.on(
+  //     `orderbook-${market.address.toBase58()}`,
+  //     (data) => {
+  //       if (
+  //         !currentOrderbookData.current ||
+  //         JSON.stringify(currentOrderbookData.current) !==
+  //           JSON.stringify(lastOrderbookData.current)
+  //       ) {
+  //         // const fetchedBids = await axios.get(
+  //         //   `${API_URL}/orderbook/bids/${market.address.toBase58()}/${depth}`
+  //         // ).then(response=>{
+  //         //   console.log(response)
+  //         //   return response.data.map(({price,size})=>[price,size])
+  //         // }).catch(error=>{
+  //         //   console.log(error)
+  //         // })
+  //         let bids = data.bids.map(({ price, size }) => [price, size]);
+  //         let asks = data.asks.map(({ price, size }) => [price, size]);
+
+  //         // console.log('using socket:', bids, asks);
+
+  //         let sum = (total, [, size], index) =>
+  //           index < depth ? total + size : total;
+  //         let totalSize = bids.reduce(sum, 0) + asks.reduce(sum, 0);
+
+  //         let bidsToDisplay = getCumulativeOrderbookSide(
+  //           bids,
+  //           totalSize,
+  //           false,
+  //         );
+  //         let asksToDisplay = getCumulativeOrderbookSide(asks, totalSize, true);
+
+  //         currentOrderbookData.current = {
+  //           bids: orderbook?.bids,
+  //           asks: orderbook?.asks,
+  //         };
+
+  //         setOrderbookData({ bids: bidsToDisplay, asks: asksToDisplay });
+  //       }
+  //     },
+  //   );
+  //   return () => {
+  //     listener.off();
+  //   };
+  // }, [market]);
 
   useEffect(() => {
     lastOrderbookData.current = {
@@ -136,25 +191,34 @@ export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
     return cumulative;
   }
 
-  
-
   return (
     <FloatingElement
       style={
-        smallScreen ? { flex: 1,backgroundColor:'transparent' } : { minHeight: '580px', overflow: 'hidden', backgroundColor:'transparent' }
+        smallScreen
+          ? { flex: 1, backgroundColor: 'transparent' }
+          : {
+              minHeight: '580px',
+              overflow: 'hidden',
+              backgroundColor: 'transparent',
+            }
       }
     >
-      <Title style={{textAlign:'center'}}>Orderbook</Title>
-      <MarkPriceComponent markPrice={markPrice} onPrice={()=>{onPrice(markPrice)}} />
+      <Title style={{ textAlign: 'center' }}>Orderbook</Title>
+      <MarkPriceComponent
+        markPrice={markPrice}
+        onPrice={() => {
+          onPrice(markPrice);
+        }}
+      />
       <FlexDiv>
         <div>
           <SizeTitle>
-              <Col span={12} style={{ textAlign: 'left' }}>
-                Size ({baseCurrency})
-              </Col>
-              <Col span={12} style={{ textAlign: 'right' }}>
-                Price ({quoteCurrency})
-              </Col>
+            <Col span={12} style={{ textAlign: 'left' }}>
+              Size ({baseCurrency})
+            </Col>
+            <Col span={12} style={{ textAlign: 'right' }}>
+              Price ({quoteCurrency})
+            </Col>
           </SizeTitle>
           {orderbookData?.bids.map(({ price, size, sizePercent }) => (
             <OrderbookRow
@@ -190,7 +254,6 @@ export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
           </SizeTitle>
         </InversedFlex>
       </FlexDiv>
-      
     </FloatingElement>
   );
 }
@@ -239,7 +302,9 @@ const OrderbookRow = React.memo(
                 : 'rgba(242, 60, 105, 0.6)'
             }
           />
-          <Price className="price" onClick={onPriceClick}>{formattedPrice}</Price>
+          <Price className="price" onClick={onPriceClick}>
+            {formattedPrice}
+          </Price>
         </Col>
       </Row>
     );
@@ -249,7 +314,7 @@ const OrderbookRow = React.memo(
 );
 
 const MarkPriceComponent = React.memo(
-  ({ markPrice,onPrice }) => {
+  ({ markPrice, onPrice }) => {
     const { market } = useMarket();
     const previousMarkPrice = usePrevious(markPrice);
 
@@ -257,8 +322,8 @@ const MarkPriceComponent = React.memo(
       markPrice > previousMarkPrice
         ? '#41C77A'
         : markPrice < previousMarkPrice
-          ? '#F23B69'
-          : 'white';
+        ? '#F23B69'
+        : 'white';
 
     let formattedMarkPrice =
       markPrice &&
