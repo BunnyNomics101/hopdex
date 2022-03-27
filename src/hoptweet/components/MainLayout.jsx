@@ -12,6 +12,7 @@ export function MainLayout() {
   //let location = useLocation();
   const { sessions } = useContext(SessionContext);
   const currentSession = sessions[sessions.length - 1];
+
   switch (currentSession.type) {
     case 'home':
       return <Home />;

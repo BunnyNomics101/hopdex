@@ -3,7 +3,16 @@ import { Tweet } from '../models/Tweet';
 
 export const fetchTweets = async ({ program }, filters = []) => {
   const tweets = await program.account.tweet.all(filters);
-  return tweets.map((tweet) => new Tweet(tweet.publicKey, tweet.account));
+  console.log(program.account.tweet);
+
+  const toReturn = [];
+
+  for (let i = 0; i < Math.min(tweets.length, 10); i++) {
+    toReturn.push(new Tweet(tweets[i].publicKey, tweets[i].account));
+  }
+
+  return toReturn;
+  // return tweets.map((tweet) => new Tweet(tweet.publicKey, tweet.account));
 };
 
 export const authorFilter = (authorBase58PublicKey) => ({
