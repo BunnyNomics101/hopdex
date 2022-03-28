@@ -1,5 +1,5 @@
-import React,{ useState } from 'react';
-import { Row, Col,Button } from 'antd';
+import React, { useState } from 'react';
+import { Row, Col, Button } from 'antd';
 import { useFills, useMarket, useOpenOrders } from '../../utils/markets';
 import DataTable from '../layout/DataTable';
 import styled from 'styled-components';
@@ -14,9 +14,7 @@ const CancelButton = styled(Button)`
   border: 1px solid #f23b69;
 `;
 
-export default function FillsTable({
-  onCancelSuccess
-}) {
+export default function FillsTable({ onCancelSuccess }) {
   const fills = useFills();
   const openOrders = useOpenOrders();
 
@@ -95,25 +93,24 @@ export default function FillsTable({
       key: 'orderId',
       render: (order) => (
         <div style={{ textAlign: 'right' }}>
-          {(order.isOpen && <CancelButton
-            icon={<DeleteOutlined />}
-            onClick={() => cancel(order)}
-            loading={cancelId + '' === order?.orderId + ''}
-          >
-            
-          </CancelButton>)}
+          {order.isOpen && (
+            <CancelButton
+              icon={<DeleteOutlined />}
+              onClick={() => cancel(order)}
+              loading={cancelId + '' === order?.orderId + ''}
+            ></CancelButton>
+          )}
         </div>
       ),
     },
   ];
 
-
   const dataSourceFill = (fills || []).map((fill) => ({
     ...fill,
     key: `${fill.orderId}${fill.side}`,
     liquidity: fill.eventFlags.maker ? 'Maker' : 'Taker',
-  }))
-  
+  }));
+
   // const dataSourceFill = [{
   //   marketName: 'somethng',
   //   size: 1000,
@@ -124,17 +121,18 @@ export default function FillsTable({
   const dataSourceOpenOrders = (openOrders || []).map((order) => ({
     ...order,
     key: order.orderId,
-    isOpen: true
+    isOpen: true,
   }));
 
-  const dataSource = [...dataSourceOpenOrders, ...dataSourceFill]
+  const dataSource = [...dataSourceOpenOrders, ...dataSourceFill];
+  const minimized = dataSource.slice(0, 10);
 
   return (
     <>
       <Row>
         <Col span={24}>
           <DataTable
-            dataSource={dataSource}
+            dataSource={minimized}
             columns={columns}
             pagination={true}
             pageSize={5}
