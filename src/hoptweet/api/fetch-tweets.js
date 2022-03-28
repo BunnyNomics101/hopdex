@@ -3,7 +3,6 @@ import { Tweet } from '../models/Tweet';
 
 export const fetchTweets = async ({ program }, filters = []) => {
   const tweets = await program.account.tweet.all(filters);
-  console.log(program.account.tweet);
 
   const toReturn = [];
 
