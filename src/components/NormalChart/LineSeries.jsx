@@ -12,7 +12,6 @@ import {
 import { useMarket, USE_MARKETS } from '../../utils/markets';
 import { zipWith } from 'lodash';
 import { useMarkPrice } from '../../utils/markets';
-import { getDecimalCount } from '../../utils/utils';
 
 let lineSeriesChart = null;
 let currentData = [];
@@ -33,13 +32,21 @@ const LineSeries = ({
   const markPrice = useMarkPrice();
 
   const [state, setState] = useState({ loading: false });
+  const [shownChartData, setShownChartData] = useState([]);
 
-  let formattedMarkPrice =
-    markPrice &&
-    market?.tickSize &&
-    markPrice.toFixed(getDecimalCount(market.tickSize));
+  useEffect(() => {
+    if (markPrice === null) return;
+    const nowDate = new Date();
+    const nowUnix = Math.floor(nowDate.getTime() / 1000);
+    console.log(nowUnix);
+    setShownChartData((prev) => [...prev, { time: nowUnix, value: markPrice }]);
+  }, [markPrice]);
 
-  console.log(formattedMarkPrice);
+  useEffect(() => {
+    if (!lineSeriesChart) return;
+    console.log(shownChartData);
+    lineSeriesChart.setData(shownChartData);
+  }, [shownChartData]);
 
   // // Functions
   const setData = useCallback(() => {
@@ -69,6 +76,7 @@ const LineSeries = ({
       .all(axiosRequests)
       .then((response) => {
         currentData = [];
+        console.log(response);
         currentData = response.reduce((acc, obj) => {
           const { data } = obj || {};
           const { t: time = [], c: close = [] } = data || {};
@@ -78,6 +86,7 @@ const LineSeries = ({
           }));
           return [...seriesData, ...acc];
         }, []);
+        console.log(currentData);
         lineSeriesChart.setData(currentData);
         outOfChart(currentData);
         chart.timeScale().fitContent();
