@@ -32,8 +32,6 @@ export function ChartProvider({ children }: { children: any }) {
         setShownChartData((prev) => [...prev, { time: nowUnix, value: markPrice }]);
     }, [markPrice]);
 
-    
-
     const value: ChartContext = {
         shownChartData
     }
