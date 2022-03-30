@@ -14,14 +14,14 @@ export default function App() {
     <Suspense fallback={() => <Spin size="large" />}>
       <GlobalStyle />
       <ErrorBoundary>
-        
+
         <ConnectionProvider>
           <ReferrerProvider>
             <WalletProvider>
               <PreferencesProvider>
-                <Suspense fallback={() => <Spin size="large" />}>
-                  <Routes />
-                </Suspense>
+                  <Suspense fallback={() => <Spin size="large" />}>
+                    <Routes />
+                  </Suspense>
               </PreferencesProvider>
             </WalletProvider>
           </ReferrerProvider>
