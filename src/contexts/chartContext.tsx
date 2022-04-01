@@ -30,15 +30,24 @@ export function ChartProvider({ children }: { children: any }) {
     const { market } = useMarket()
 
     useEffect(() => {
+
+
         if (markPrice === null) return;
+        console.log(firstOne.current)
         if (firstOne.current) {
-            firstOne.current= false
+            firstOne.current = false
             return
         };
 
         const nowDate = new Date();
         const nowUnix = Math.floor(nowDate.getTime() / 1000);
-        setShownChartData((prev) => [...prev, { time: nowUnix, value: markPrice }]);
+
+        setShownChartData((prev) => {
+            if (!(prev.length > 0))
+                return [...prev, { time: nowUnix, value: markPrice }];
+            if (prev[prev.length - 1].time >= nowUnix) return prev;
+            return [...prev, { time: nowUnix, value: markPrice }]
+        });
         firstOne.current = false
     }, [markPrice]);
 
