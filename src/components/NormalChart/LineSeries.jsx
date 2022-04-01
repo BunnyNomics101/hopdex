@@ -44,6 +44,7 @@ const LineSeries = ({
   const setData = useCallback(() => {
     console.log(shownChartData);
     if (shownChartData.length > 0) {
+      console.log('setting data');
       lineSeriesChart.setData(shownChartData);
       return;
     }
