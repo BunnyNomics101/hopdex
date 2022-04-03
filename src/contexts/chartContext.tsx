@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useMarket, useMarkPrice } from "../utils/markets";
+import { useInterval } from "../utils/useInterval";
 
 
 type ChartData = {
@@ -24,20 +25,12 @@ export function ChartProvider({ children }: { children: any }) {
 
     const [shownChartData, setShownChartData] = useState<ChartData[]>([])
     const markPrice = useMarkPrice()
-    const firstOne = useRef(false)
-
 
     const { market } = useMarket()
 
-    useEffect(() => {
-
-
+    const updateChart = useCallback(()=>{
         if (markPrice === null) return;
-        console.log(firstOne.current)
-        if (firstOne.current) {
-            firstOne.current = false
-            return
-        };
+        console.log(markPrice)
 
         const nowDate = new Date();
         const nowUnix = Math.floor(nowDate.getTime() / 1000);
@@ -48,14 +41,17 @@ export function ChartProvider({ children }: { children: any }) {
             if (prev[prev.length - 1].time >= nowUnix) return prev;
             return [...prev, { time: nowUnix, value: markPrice }]
         });
-        firstOne.current = false
-    }, [markPrice]);
+
+    },[markPrice])
+
+    useInterval(() => {
+        updateChart()
+    }, 10000);
 
 
     // emptying chart on maket change
     useEffect(() => {
         if (!market) return;
-        firstOne.current = true;
         setShownChartData([])
     }, [market])
 
