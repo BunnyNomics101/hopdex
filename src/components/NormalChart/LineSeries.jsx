@@ -44,7 +44,9 @@ const LineSeries = ({
     if (shownChartData.length > 0) {
       console.log('setting data');
       lineSeriesChart.setData(shownChartData);
-      chart.timeScale().fitContent();
+      if (shownChartData.length >= 2) {
+        chart.timeScale().fitContent();
+      }
       return;
     }
     setState((prev) => ({ ...prev, loading: true }));
