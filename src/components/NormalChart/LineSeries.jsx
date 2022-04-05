@@ -33,18 +33,18 @@ const LineSeries = ({
   const [state, setState] = useState({ loading: false });
 
   const { shownChartData } = useChartData();
+  const shownChartDataRef = useRef();
 
-  // useEffect(() => {
-  //   console.log(shownChartData);
-  //   if (!lineSeriesChart) return;
-  //   lineSeriesChart.setData(shownChartData);
-  // }, [shownChartData]);
+  useEffect(() => {
+    shownChartDataRef.current = shownChartData;
+  }, [shownChartData]);
 
   // // Functions
   const setData = useCallback(() => {
     if (shownChartData.length > 0) {
       console.log('setting data');
       lineSeriesChart.setData(shownChartData);
+      chart.timeScale().fitContent();
       return;
     }
     setState((prev) => ({ ...prev, loading: true }));
@@ -164,6 +164,7 @@ const LineSeries = ({
 
   const subscribeHandler = useCallback(
     (param) => {
+      // if(!shownChartData) return ;
       if (
         !param.time ||
         param.point.x < 0 ||
@@ -186,9 +187,9 @@ const LineSeries = ({
         }
 
         previousPriceObj =
-          currentData[
-            currentData.indexOf(
-              currentData.find(
+          shownChartDataRef.current[
+            shownChartDataRef.current.indexOf(
+              shownChartDataRef.current.find(
                 (currentData) => currentData.time === param.time,
               ),
             ) - 1

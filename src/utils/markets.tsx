@@ -359,7 +359,6 @@ export function useMarkPrice() {
         : null;
 
     setMarkPrice(markPrice);
-    console.log(ba, bb, markPrice)
 
   }, [orderbook, trades]);
 
