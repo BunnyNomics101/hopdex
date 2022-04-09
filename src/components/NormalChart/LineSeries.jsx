@@ -44,9 +44,9 @@ const LineSeries = ({
     if (shownChartData.length > 0) {
       // console.log('setting data');
       lineSeriesChart.setData(shownChartData);
+      outOfChart(shownChartData);
       if (shownChartData.length >= 2) {
         chart.timeScale().fitContent();
-        outOfChart(shownChartData);
       }
       return;
     }
@@ -132,17 +132,22 @@ const LineSeries = ({
       ).toLocaleDateString();
     }
 
-    if ('value' in previousPriceObj) {
-      price = currentPriceObj.value;
-      if (typeof previousPriceObj !== 'undefined') {
-        previousPrice = previousPriceObj.value;
+    if (previousPriceObj) {
+      if ('value' in previousPriceObj) {
+        price = currentPriceObj.value;
+        if (typeof previousPriceObj !== 'undefined') {
+          previousPrice = previousPriceObj.value;
+        }
+      } else {
+        price = currentPriceObj.close;
+        if (typeof previousPriceObj !== 'undefined') {
+          previousPrice = previousPriceObj.close;
+        }
       }
     } else {
-      price = currentPriceObj.close;
-      if (typeof previousPriceObj !== 'undefined') {
-        previousPrice = previousPriceObj.close;
-      }
+      price = currentPriceObj.value;
     }
+
     var differenceStr = '';
 
     if (typeof previousPriceObj !== 'undefined') {
@@ -175,7 +180,7 @@ const LineSeries = ({
         param.point.y < 0 ||
         param.point.y > height
       ) {
-        outOfChart(currentData);
+        outOfChart(shownChartDataRef.current);
       } else {
         var previousPriceObj;
         var price = param.seriesPrices.get(lineSeriesChart);
