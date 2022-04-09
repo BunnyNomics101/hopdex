@@ -7,6 +7,7 @@ import { useInterval } from '../utils/useInterval';
 import FloatingElement from './layout/FloatingElement';
 import usePrevious from '../utils/usePrevious';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+import { useChartData } from '../contexts/chartContext';
 
 const Title = styled.div`
   color: rgba(255, 255, 255, 1);
@@ -75,8 +76,9 @@ const InversedFlex = styled.div`
 `;
 
 export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
-  const markPrice = useMarkPrice();
-  const [orderbook] = useOrderbook();
+  // const [orderbook] = useOrderbook();
+  // const markPrice = useMarkPrice(orderbook);
+  const { orderbook, markPrice } = useChartData();
   const { baseCurrency, quoteCurrency } = useMarket();
 
   const currentOrderbookData = useRef(null);

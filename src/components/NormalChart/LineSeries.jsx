@@ -42,10 +42,11 @@ const LineSeries = ({
   // // Functions
   const setData = useCallback(() => {
     if (shownChartData.length > 0) {
-      console.log('setting data');
+      // console.log('setting data');
       lineSeriesChart.setData(shownChartData);
       if (shownChartData.length >= 2) {
         chart.timeScale().fitContent();
+        outOfChart(shownChartData);
       }
       return;
     }

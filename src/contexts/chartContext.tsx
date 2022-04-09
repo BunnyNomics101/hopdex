@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { useMarket, useMarkPrice } from "../utils/markets";
+import { useMarket, useMarkPrice, useOrderbook } from "../utils/markets";
 import { useInterval } from "../utils/useInterval";
 
 
@@ -10,10 +10,14 @@ type ChartData = {
 
 interface ChartContext {
     shownChartData: ChartData[],
+    markPrice: number,
+    orderbook: {bids: any[], asks: any[]}
 }
 
 const chartContext = createContext<ChartContext>({
-    shownChartData: []
+    shownChartData: [],
+    markPrice: 0,
+    orderbook: {bids: [], asks: []}
 })
 
 export function useChartData() {
@@ -24,13 +28,13 @@ export function useChartData() {
 export function ChartProvider({ children }: { children: any }) {
 
     const [shownChartData, setShownChartData] = useState<ChartData[]>([])
-    const markPrice = useMarkPrice()
+    const [orderbook] = useOrderbook()
+    const markPrice = useMarkPrice(orderbook)
 
     const { market } = useMarket()
 
     const updateChart = useCallback(()=>{
         if (markPrice === null) return;
-        console.log(markPrice)
 
         const nowDate = new Date();
         const nowUnix = Math.floor(nowDate.getTime() / 1000);
@@ -44,9 +48,14 @@ export function ChartProvider({ children }: { children: any }) {
 
     },[markPrice])
 
+
+    useEffect(()=>{
+        console.log(orderbook)
+    },[orderbook])
+
     useInterval(() => {
         updateChart()
-    }, 10000);
+    }, 5000);
 
 
     // emptying chart on maket change
@@ -56,7 +65,9 @@ export function ChartProvider({ children }: { children: any }) {
     }, [market])
 
     const value: ChartContext = {
-        shownChartData
+        shownChartData,
+        markPrice,
+        orderbook
     }
     return (
         <chartContext.Provider value={value}>

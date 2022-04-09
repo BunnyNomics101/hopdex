@@ -340,10 +340,10 @@ export function useMarket() {
   return context;
 }
 
-export function useMarkPrice() {
+export function useMarkPrice(orderbook:{bids:any[],asks:any[]}) {
   const [markPrice, setMarkPrice] = useState<null | number>(null);
 
-  const [orderbook] = useOrderbook();
+  // const [orderbook] = useOrderbook();
   const trades = useTrades();
 
   useEffect(() => {
