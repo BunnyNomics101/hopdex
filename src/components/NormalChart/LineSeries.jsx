@@ -30,7 +30,7 @@ const LineSeries = ({
   const { market } = useMarket();
   const chartRef = useRef(null);
 
-  const [state, setState] = useState({ loading: false });
+  const [state, setState] = useState({ loading: true });
 
   const { shownChartData } = useChartData();
   const shownChartDataRef = useRef();
@@ -48,65 +48,66 @@ const LineSeries = ({
       if (shownChartData.length >= 2) {
         chart.timeScale().fitContent();
       }
+      setState({ loading: false });
       return;
     }
-    setState((prev) => ({ ...prev, loading: true }));
-    const timeIntervals = getTimeData(interval) || [];
-    const axiosRequests = [];
-    timeIntervals.forEach((intervalObj) => {
-      const { currentTime, endTime } = intervalObj;
-      const symbol =
-        USE_MARKETS.find(
-          (m) => m.address.toBase58() === market?.publicKey.toBase58(),
-        )?.name || 'SRM/USDC';
-      const params = {
-        symbol,
-        resolution: 60,
-        from: currentTime,
-        to: endTime,
-      };
-      axiosRequests.push(
-        axios.get(`https://dry-ravine-67635.herokuapp.com/tv/history`, {
-          params,
-        }),
-      );
-    });
-    currentData = [];
-    axios
-      .all(axiosRequests)
-      .then((response) => {
-        currentData = [];
-        currentData = response.reduce((acc, obj) => {
-          const { data } = obj || {};
-          const { t: time = [], c: close = [] } = data || {};
-          const seriesData = zipWith(time, close, (time, close) => ({
-            time,
-            value: parseFloat(close.toFixed(2)),
-          }));
-          return [...seriesData, ...acc];
-        }, []);
+    // setState((prev) => ({ ...prev, loading: true }));
+    // const timeIntervals = getTimeData(interval) || [];
+    // const axiosRequests = [];
+    // timeIntervals.forEach((intervalObj) => {
+    //   const { currentTime, endTime } = intervalObj;
+    //   const symbol =
+    //     USE_MARKETS.find(
+    //       (m) => m.address.toBase58() === market?.publicKey.toBase58(),
+    //     )?.name || 'SRM/USDC';
+    //   const params = {
+    //     symbol,
+    //     resolution: 60,
+    //     from: currentTime,
+    //     to: endTime,
+    //   };
+    //   axiosRequests.push(
+    //     axios.get(`https://dry-ravine-67635.herokuapp.com/tv/history`, {
+    //       params,
+    //     }),
+    //   );
+    // });
+    // currentData = [];
+    // axios
+    //   .all(axiosRequests)
+    //   .then((response) => {
+    //     currentData = [];
+    //     currentData = response.reduce((acc, obj) => {
+    //       const { data } = obj || {};
+    //       const { t: time = [], c: close = [] } = data || {};
+    //       const seriesData = zipWith(time, close, (time, close) => ({
+    //         time,
+    //         value: parseFloat(close.toFixed(2)),
+    //       }));
+    //       return [...seriesData, ...acc];
+    //     }, []);
 
-        lineSeriesChart.setData(currentData);
-        outOfChart(currentData);
-        chart.timeScale().fitContent();
+    //     lineSeriesChart.setData(currentData);
+    //     outOfChart(currentData);
+    //     chart.timeScale().fitContent();
 
-        // chart.applyOptions({
-        //   timeScale: {
-        //     autoScale: true,
-        //     barSpacing: barSize,
-        //     lockVisibleTimeRangeOnResize: true,
-        //     visible: false,
-        //     timeVisible: false,
-        //   },
-        // });
-      })
-      .finally(() => {
-        setState((prev) => ({ ...prev, loading: false }));
-      });
+    //     // chart.applyOptions({
+    //     //   timeScale: {
+    //     //     autoScale: true,
+    //     //     barSpacing: barSize,
+    //     //     lockVisibleTimeRangeOnResize: true,
+    //     //     visible: false,
+    //     //     timeVisible: false,
+    //     //   },
+    //     // });
+    //   })
+    //   .finally(() => {
+    //     setState((prev) => ({ ...prev, loading: false }));
+    //   });
 
-    // outOfChart(currentData);
-    chart.timeScale().fitContent();
-  }, [interval, market, shownChartData]);
+    // // outOfChart(currentData);
+    // chart.timeScale().fitContent();
+  }, [shownChartData]);
 
   const outOfChart = (currentData) => {
     if (
