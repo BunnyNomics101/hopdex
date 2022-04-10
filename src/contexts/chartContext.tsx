@@ -49,9 +49,9 @@ export function ChartProvider({ children }: { children: any }) {
     },[markPrice])
 
 
-    useEffect(()=>{
-        console.log(orderbook)
-    },[orderbook])
+    // useEffect(()=>{
+    //     console.log(orderbook)
+    // },[orderbook])
 
     useInterval(() => {
         updateChart()

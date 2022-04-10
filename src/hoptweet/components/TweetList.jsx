@@ -3,15 +3,14 @@ import TweetCard from './TweetCard';
 
 const TweetList = (props) => {
   const { tweets, loading, remove } = props;
-  const orderedTweets = tweets.sort((a, b) => b.timestamp - a.timestamp);
-
+  console.log(tweets);
   if (loading) {
     return <div className="p-8 text-gray-500 text-center">Loading...</div>;
   }
 
   return (
-    <div className="divide-y">
-      {orderedTweets.map((tweet) => (
+    <div className="divide-y" style={{ minHeight: '500px' }}>
+      {tweets.map((tweet) => (
         <TweetCard remove={remove} key={tweet.key} tweet={tweet}></TweetCard>
       ))}
     </div>

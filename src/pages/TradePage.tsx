@@ -70,7 +70,7 @@ export default function TradePage() {
       marketAddress={marketAddress}
       setMarketAddress={setMarketAddress}
     >
-      <TradePageInner  />
+      <TradePageInner />
     </MarketProvider>
   );
 }
@@ -86,7 +86,7 @@ function TradePageInner() {
   const markets = useMarketsList();
   const [handleDeprecated, setHandleDeprecated] = useState(false);
   const [addMarketVisible, setAddMarketVisible] = useState(false);
-  const deprecatedMarkets = useUnmigratedDeprecatedMarkets(); 
+  const deprecatedMarkets = useUnmigratedDeprecatedMarkets();
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
     width: window.innerWidth,
@@ -186,10 +186,10 @@ function TradePageInner() {
         >
           <Row
             align="middle"
-            style={{ paddingLeft: 5, paddingRight: 5, display: 'flex'  }}
+            style={{ paddingLeft: 5, paddingRight: 5, display: 'flex' }}
             gutter={16}
           >
-            <Col style={{paddingRight: 0,paddingLeft: 2}}>
+            <Col style={{ paddingRight: 0, paddingLeft: 2 }}>
               <MarketSelector
                 width={width}
                 markets={markets}
@@ -224,8 +224,8 @@ function TradePageInner() {
           {/* i am here */}
           <Col>
             <div style={{
-              display:'flex', 
-              alignItems:'center',
+              display: 'flex',
+              alignItems: 'center',
               gap: '10px',
               position: 'relative',
               zIndex: 1,
@@ -234,19 +234,19 @@ function TradePageInner() {
                 fontSize: '1.2rem',
                 margin: 0,
                 color: '#434a59',
-                zIndex: 2, 
+                zIndex: 2,
               }}>Hopdex</h1>
               <img src={LogoSvg} alt="hopdex"
                 style={{
                   width: '40px',
-                  position:'absolute',
+                  position: 'absolute',
                   left: '50%', top: '50%',
-                  transform:'translate(-50%,-50%)',
-                  zIndex: 1, 
-                  opacity:0.3
+                  transform: 'translate(-50%,-50%)',
+                  zIndex: 1,
+                  opacity: 0.3
                 }}
               />
-              </div>
+            </div>
           </Col>
 
 
@@ -289,7 +289,7 @@ function MarketSelector({
 
   const onSetMarketAddress = (marketAddress) => {
     console.log(marketAddress);
-    
+
     setHandleDeprecated(false);
     setMarketAddress(marketAddress);
 
@@ -306,9 +306,9 @@ function MarketSelector({
         market?.address && proposedMarket.address.equals(market.address),
     )
     ?.address?.toBase58();
-  
 
-  
+
+
   return (
     <StyledSelect
       showSearch
@@ -360,15 +360,15 @@ function MarketSelector({
               ? -1
               : extractQuote(a.name) !== 'USDT' &&
                 extractQuote(b.name) === 'USDT'
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           )
           .sort((a, b) =>
             extractBase(a.name) < extractBase(b.name)
               ? -1
               : extractBase(a.name) > extractBase(b.name)
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           )
           .map(({ address, name, deprecated }, i) => (
             <Option
@@ -405,7 +405,7 @@ const DeprecatedMarketsPage = ({ switchToLiveMarkets }) => {
 
 const RenderNormal = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
 
-  
+
   return (
     <Row
       style={{
@@ -419,7 +419,7 @@ const RenderNormal = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
             rowGap: '0px',
             minHeight: '580px',
             margin: '5px',
-            flexWrap:'nowrap'
+            flexWrap: 'nowrap'
           }}
         >
           <TVChartContainer
@@ -438,14 +438,17 @@ const RenderNormal = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
           </Col>
         </Row>
         <Row>
-          <UserInfoTable />
-          <Col flex={'360px'} style={{ height: '100%' }}>
-            <TradesTable smallScreen={false} />
+          <Col flex={'1 1 40%'} style={{minWidth: "600px"}}>
+            <UserInfoTable />
+          </Col>
+
+          <Col style={{ height: '100%',width: "700px" }}>
+            <TradesTable smallScreen={true} />
           </Col>
         </Row>
       </Col>
-      
-      
+
+
     </Row>
   );
 };
@@ -454,9 +457,9 @@ const RenderSmall = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
   return (
     <>
       <Row>
-        <TVChartContainer width={width} height={500} 
+        <TVChartContainer width={width} height={500}
           isTabletView={true}
-          isMobileView={false} 
+          isMobileView={false}
           smallScreen={true}
           depth={13}
           onPrice={onPrice}
@@ -474,11 +477,11 @@ const RenderSmall = ({ onChangeOrderRef, onPrice, onSize, width, height }) => {
         >
           <TradeForm setChangeOrderRef={onChangeOrderRef} />
           {/* <StandaloneBalancesDisplay /> */}
-        </Col> 
+        </Col>
         <Col flex="500px 1 0">
           <UserInfoTable />
         </Col>
-        
+
       </Row>
       <Row>
         <Col flex="auto" style={{ display: 'flex' }}>
@@ -499,7 +502,7 @@ const RenderSmaller = ({
   return (
     <>
       <Row>
-        <TVChartContainer width={width} height={400} 
+        <TVChartContainer width={width} height={400}
           isMobileView={true}
           smallScreen={true} onPrice={onPrice} onSize={onSize}
         />
@@ -512,7 +515,7 @@ const RenderSmaller = ({
           <StandaloneBalancesDisplay />
         </Col> */}
       </Row>
-      
+
       <Row>
         <Col flex="auto">
           <UserInfoTable />
@@ -525,8 +528,8 @@ const RenderSmaller = ({
         </Col>
       </Row>
 
-      
-      <div style={{height: '30vh'}}></div>
+
+      <div style={{ height: '30vh' }}></div>
     </>
   );
 };
