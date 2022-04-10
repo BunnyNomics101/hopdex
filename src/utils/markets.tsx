@@ -1,14 +1,14 @@
-import {Market, OpenOrders, Orderbook, TOKEN_MINTS, TokenInstructions,} from '@project-serum/serum';
-import {PublicKey} from '@solana/web3.js';
-import React, {useContext, useEffect, useState} from 'react';
-import {divideBnToNumber, floorToDecimal, getTokenMultiplierFromDecimals, sleep, useLocalStorageState,} from './utils';
-import {refreshCache, useAsyncData} from './fetch-loop';
-import {useAccountData, useAccountInfo, useConnection} from './connection';
-import {useWallet} from './wallet';
+import { Market, OpenOrders, Orderbook, TOKEN_MINTS, TokenInstructions, } from '@project-serum/serum';
+import { PublicKey } from '@solana/web3.js';
+import React, { useContext, useEffect, useState } from 'react';
+import { divideBnToNumber, floorToDecimal, getTokenMultiplierFromDecimals, sleep, useLocalStorageState, } from './utils';
+import { refreshCache, useAsyncData } from './fetch-loop';
+import { useAccountData, useAccountInfo, useConnection } from './connection';
+import { useWallet } from './wallet';
 import tuple from 'immutable-tuple';
-import {notify} from './notifications';
+import { notify } from './notifications';
 import BN from 'bn.js';
-import {getTokenAccountInfo, parseTokenAccountData, useMintInfos,} from './tokens';
+import { getTokenAccountInfo, parseTokenAccountData, useMintInfos, } from './tokens';
 import {
   Balances,
   CustomMarketInfo,
@@ -20,8 +20,8 @@ import {
   SelectedTokenAccounts,
   TokenAccount,
 } from './types';
-import {WRAPPED_SOL_MINT} from '@project-serum/serum/lib/token-instructions';
-import {Order} from '@project-serum/serum/lib/market';
+import { WRAPPED_SOL_MINT } from '@project-serum/serum/lib/token-instructions';
+import { Order } from '@project-serum/serum/lib/market';
 import BonfidaApi from './bonfidaConnector';
 import socket from './socket';
 import axios from 'axios';
@@ -30,7 +30,7 @@ import { API_URL } from '../config';
 // const FILTERED_MARKETS = MARKETS.filter(market=> (USED_MARKETS.includes(market.name)&& (market.deprecated===false)))
 const FILTERED_MARKETS = [
   {
-    address: new PublicKey( "9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"),
+    address: new PublicKey("9wFFyRfZBsuAha4YcuxcXLKwMxJR43S7fPfQLusDBzvT"),
     deprecated: false,
     name: "SOL/USDC",
     programId: new PublicKey("9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin")
@@ -56,7 +56,7 @@ const FILTERED_MARKETS = [
   {
     address: new PublicKey("AvVJcsk26dYHXS9Uya2tkDdSD3i59ubvo1qYKB2w2j5C"),
     deprecated: false,
-    name:"NOM/USDC",
+    name: "NOM/USDC",
     programId: new PublicKey("9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin")
   }
 ]
@@ -251,10 +251,10 @@ export function MarketProvider({ marketAddress, setMarketAddress, children }) {
 
   // Replace existing market with a non-deprecated one on first load
   useEffect(() => {
-    
+
     if (marketInfo && marketInfo.deprecated) {
       console.log('Switching markets from deprecated', marketInfo);
-      
+
       if (DEFAULT_MARKET) {
         setMarketAddress(DEFAULT_MARKET.address.toBase58());
       }
@@ -312,7 +312,7 @@ export function MarketProvider({ marketAddress, setMarketAddress, children }) {
 export function getTradePageUrl(marketAddress?: string) {
   if (!marketAddress) {
     const saved = localStorage.getItem('marketAddress');
-    console.log(DEFAULT_MARKET) 
+    console.log(DEFAULT_MARKET)
     if (saved) {
       marketAddress = JSON.parse(saved);
     }
@@ -340,10 +340,10 @@ export function useMarket() {
   return context;
 }
 
-export function useMarkPrice() {
+export function useMarkPrice(orderbook:{bids:any[],asks:any[]}) {
   const [markPrice, setMarkPrice] = useState<null | number>(null);
 
-  const [orderbook] = useOrderbook();
+  // const [orderbook] = useOrderbook();
   const trades = useTrades();
 
   useEffect(() => {
@@ -359,6 +359,7 @@ export function useMarkPrice() {
         : null;
 
     setMarkPrice(markPrice);
+
   }, [orderbook, trades]);
 
   return markPrice;
@@ -426,11 +427,11 @@ export function useOrderbookAccounts() {
 // export function useOrderbook(
 //   depth = 20,
 // ): [{ bids: number[][]; asks: number[][] }, boolean] {
-  
-  
+
+
 //   const { bidOrderbook, askOrderbook } = useOrderbookAccounts();
 //   const { market } = useMarket();
-  
+
 //   const bids =
 //     !bidOrderbook || !market
 //       ? []
@@ -442,40 +443,41 @@ export function useOrderbookAccounts() {
 //   return [{ bids, asks }, !!bids || !!asks];
 // }
 export function useOrderbook(
-  depth=20
-){
-  const {market} = useMarket()
+  depth = 20
+) {
+  const { market } = useMarket()
   const [orderbook, setOrderbook] = useState({
     bids: [],
     asks: [],
   })
 
-  useEffect(()=>{
-    if(!market) return ; 
+  useEffect(() => {
+    if (!market) return;
 
     //getting data initially
     axios
-    .get(`${API_URL}/orderbook/${market.address.toBase58()}/20`)
-    .then(response=>{
-      const {bids, asks} = response.data;
-      setOrderbook(prev=>({
-        bids: bids.map(({price,size})=>[price, size]),
-        asks : asks.map(({price,size})=>[price, size])
-      }))
-    })
+      .get(`${API_URL}/orderbook/${market.address.toBase58()}/20`)
+      .then(response => {
+        const { bids, asks } = response.data;
+        setOrderbook(prev => ({
+          bids: bids.map(({ price, size }) => [price, size]),
+          asks: asks.map(({ price, size }) => [price, size])
+        }))
+        console.log('orderbook loaded')
+      })
 
     //listening for change
     const listener = socket.on(
       `orderbook-${market.address.toBase58()}`,
-      data=>{
+      data => {
         setOrderbook({
-          bids: data.bids.map(({price, size})=>[price, size]),
-          asks: data.asks.map(({price, size})=>[price, size])
+          bids: data.bids.map(({ price, size }) => [price, size]),
+          asks: data.asks.map(({ price, size }) => [price, size])
         })
       }
     )
-    return ()=>{listener.off()}
-  },[market])
+    return () => { listener.off() }
+  }, [market])
 
   return [orderbook]
 }
@@ -652,11 +654,11 @@ export function useLocallyStoredFeeDiscountKey(): {
 export function useFeeDiscountKeys(): [
   (
     | {
-        pubkey: PublicKey;
-        feeTier: number;
-        balance: number;
-        mint: PublicKey;
-      }[]
+      pubkey: PublicKey;
+      feeTier: number;
+      balance: number;
+      mint: PublicKey;
+    }[]
     | null
     | undefined
   ),
@@ -894,8 +896,8 @@ export function useBalances(): Balances[] {
       orders:
         baseExists && market && openOrders
           ? market.baseSplSizeToNumber(
-              openOrders.baseTokenTotal.sub(openOrders.baseTokenFree),
-            )
+            openOrders.baseTokenTotal.sub(openOrders.baseTokenFree),
+          )
           : null,
       openOrders,
       unsettled:
@@ -912,8 +914,8 @@ export function useBalances(): Balances[] {
       orders:
         quoteExists && market && openOrders
           ? market.quoteSplSizeToNumber(
-              openOrders.quoteTokenTotal.sub(openOrders.quoteTokenFree),
-            )
+            openOrders.quoteTokenTotal.sub(openOrders.quoteTokenFree),
+          )
           : null,
       unsettled:
         quoteExists && market && openOrders

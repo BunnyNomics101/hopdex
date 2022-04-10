@@ -6,6 +6,7 @@ import {
   useLocallyStoredFeeDiscountKey,
   useMarket,
   useMarkPrice,
+  useOrderbook,
   useSelectedBaseCurrencyAccount,
   useSelectedBaseCurrencyBalances,
   useSelectedOpenOrdersAccount,
@@ -70,7 +71,8 @@ export default function TradeForm({
   const openOrdersAccount = useSelectedOpenOrdersAccount(true);
   const { wallet, connected } = useWallet();
   const sendConnection = useSendConnection();
-  const markPrice = useMarkPrice();
+  const [orderbook] = useOrderbook()
+  const markPrice = useMarkPrice(orderbook);
   useFeeDiscountKeys();
   const {
     storedFeeDiscountKey: feeDiscountKey,
