@@ -445,41 +445,52 @@ export function useOrderbookAccounts() {
 export function useOrderbook(
   depth = 20
 ) {
-  const { market } = useMarket()
-  const [orderbook, setOrderbook] = useState({
-    bids: [],
-    asks: [],
-  })
+  // const { market } = useMarket()
+  // const { bidOrderbook, askOrderbook } = useOrderbookAccounts();
+  // const [orderbook, setOrderbook] = useState({
+  //   bids: [],
+  //   asks: [],
+  // })
 
-  useEffect(() => {
-    if (!market) return;
+  // useEffect(() => {
+  //   if (!market) return;
 
-    //getting data initially
-    axios
-      .get(`${API_URL}/orderbook/${market.address.toBase58()}/20`)
-      .then(response => {
-        const { bids, asks } = response.data;
-        setOrderbook(prev => ({
-          bids: bids.map(({ price, size }) => [price, size]),
-          asks: asks.map(({ price, size }) => [price, size])
-        }))
-        console.log('orderbook loaded')
-      })
+  //   //getting data initially
+  //   axios
+  //     .get(`${API_URL}/orderbook/${market.address.toBase58()}/20`)
+  //     .then(response => {
+  //       const { bids, asks } = response.data;
+  //       setOrderbook(prev => ({
+  //         bids: bids.map(({ price, size }) => [price, size]),
+  //         asks: asks.map(({ price, size }) => [price, size])
+  //       }))
+  //       console.log('orderbook loaded')
+  //     })
 
-    //listening for change
-    const listener = socket.on(
-      `orderbook-${market.address.toBase58()}`,
-      data => {
-        setOrderbook({
-          bids: data.bids.map(({ price, size }) => [price, size]),
-          asks: data.asks.map(({ price, size }) => [price, size])
-        })
-      }
-    )
-    return () => { listener.off() }
-  }, [market])
+  //   //listening for change
+  //   const listener = socket.on(
+  //     `orderbook-${market.address.toBase58()}`,
+  //     data => {
+  //       setOrderbook({
+  //         bids: data.bids.map(({ price, size }) => [price, size]),
+  //         asks: data.asks.map(({ price, size }) => [price, size])
+  //       })
+  //     }
+  //   )
+  //   return () => { listener.off() }
+  // }, [market])
 
-  return [orderbook]
+  const { bidOrderbook, askOrderbook } = useOrderbookAccounts();
+  const { market } = useMarket();
+  const bids =
+    !bidOrderbook || !market
+      ? []
+      : bidOrderbook.getL2(depth).map(([price, size]) => [price, size]);
+  const asks =
+    !askOrderbook || !market
+      ? []
+      : askOrderbook.getL2(depth).map(([price, size]) => [price, size]);
+  return [{ bids, asks }];
 }
 
 // Want the balances table to be fast-updating, dont want open orders to flicker

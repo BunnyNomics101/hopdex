@@ -2,29 +2,26 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { createChart, isBusinessDay } from 'lightweight-charts';
 import { Colors, getChartOptions } from './chartOptions';
 import { Spin } from 'antd';
-import axios from 'axios';
 import {
-  getTimeData,
   formatPrice,
   formatDifference,
   businessDayToString,
 } from './chartUtil';
-import { useMarket, USE_MARKETS } from '../../utils/markets';
-import { zipWith } from 'lodash';
+import { useMarket } from '../../utils/markets';
 import { useChartData } from '../../contexts/chartContext';
 
 let lineSeriesChart = null;
-let currentData = [];
+// let currentData = [];
 // const width = Math.min(1300, document.body.offsetWidth);
 // var height = Math.round(width * 0.5625);
 var toolTipWidth = 125;
 let chart = null;
 const LineSeries = ({
   interval,
-  barSize,
+  // barSize,
   width,
   height,
-  isMobileView,
+  // isMobileView,
   onPrice,
 }) => {
   const { market } = useMarket();
