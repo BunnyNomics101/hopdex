@@ -29,7 +29,6 @@ export const fetchTweets = async ({ program }, filters = []) => {
     j = (j + 1) % oneSize;
   }
 
-  console.log(toReturn);
   return toReturn;
   // return tweets.map((tweet) => new Tweet(tweet.publicKey, tweet.account));
 };
