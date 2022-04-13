@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Dropdown, Menu } from 'antd';
+import { Dropdown, Menu } from 'antd';
 import { useWallet } from '../utils/wallet';
 import styled from "styled-components";
 import LinkAddress from './LinkAddress';

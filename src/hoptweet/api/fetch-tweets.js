@@ -4,10 +4,29 @@ import { Tweet } from '../models/Tweet';
 export const fetchTweets = async ({ program }, filters = []) => {
   const tweets = await program.account.tweet.all(filters);
 
-  const toReturn = [];
+  // sorting table
+  let sorted = [];
+  for (let i = 0; i < tweets.length; i++) {
+    sorted.push(new Tweet(tweets[i].publicKey, tweets[i].account));
+  }
+  sorted = sorted.sort((a, b) => b.timestamp - a.timestamp);
 
-  for (let i = 0; i < Math.min(tweets.length, 10); i++) {
-    toReturn.push(new Tweet(tweets[i].publicKey, tweets[i].account));
+  //puttin in tables of 3
+  const toReturn = [];
+  const oneSize = 3;
+  let j = 0;
+  for (let i = 0; i < tweets.length; i++) {
+    // if j is null push a new table with the tweet
+    if (j === 0) {
+      toReturn.push([sorted[i]]);
+    }
+    //else push it inside last table
+    else {
+      toReturn[toReturn.length - 1].push(sorted[i]);
+    }
+
+    //increment j module oneSize
+    j = (j + 1) % oneSize;
   }
 
   return toReturn;

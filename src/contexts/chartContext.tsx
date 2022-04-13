@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { useMarket, useMarkPrice, useOrderbook } from "../utils/markets";
 import { useInterval } from "../utils/useInterval";
 
@@ -49,9 +49,9 @@ export function ChartProvider({ children }: { children: any }) {
     },[markPrice])
 
 
-    useEffect(()=>{
-        console.log(orderbook)
-    },[orderbook])
+    // useEffect(()=>{
+    //     console.log(orderbook)
+    // },[orderbook])
 
     useInterval(() => {
         updateChart()
